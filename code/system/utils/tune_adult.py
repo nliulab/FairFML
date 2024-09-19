@@ -1,0 +1,266 @@
+import os
+from multiprocessing import Pool
+import numpy as np
+import pandas as pd
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+from fairness_loss import IndividualFairnessLoss, GroupFairnessLoss, HybridFairnessLoss, fairness_metrics
+from sklearn.metrics import accuracy_score, roc_auc_score, mean_squared_error
+from extract_output import extract_PFL_result, find_best_gamma_value, extract_FedAvg_result, find_best_gamma_value_FL
+
+# Pre-decide lambda values for each local dataset
+
+# Rough Psudocode:
+
+# For each lambda value in seq(0.01, 100, 0.1):
+    # train model (with fairness penalty, but without l2 penalty)
+    # evaluate (plot against) model accuracy vs. fairness metrics
+    # decide a few (say five) lambda choices
+      ## there may be different ways to do this.
+      ## can consider something similar to AutoScore/FedScore selection process
+      ## define a threshold, such as auc_fair >= auc_optimal * 0.95
+# For the selected lambda values, 
+# use 5-fold (need to adjust it based on sample size) CV 
+# to tune gamma in 10^seq(-100,3,0.1):
+    # refer to A.1 in the original paper.
+
+# note: since currently data is homogenously splitted, 
+# it's sufficient to do for only one local data.
+## Based on the paper, this is step is always necessary for any new data,
+## since lambda choices vary case by case.
+## therefore this pipeline should be more data driven when releasing
+## to the public.
+
+def read_adult_data(idx, num_clients, is_train=True):
+    col_names = ['education_11th', 'education_12th', 'education_1st-4th',
+       'education_5th-6th', 'education_7th-8th', 'education_9th',
+       'education_Assoc-acdm', 'education_Assoc-voc', 'education_Bachelors',
+       'education_Doctorate', 'education_HS-grad', 'education_Masters',
+       'education_Preschool', 'education_Prof-school',
+       'education_Some-college', 'marital.status_Married-AF-spouse',
+       'marital.status_Married-civ-spouse',
+       'marital.status_Married-spouse-absent', 'marital.status_Never-married',
+       'marital.status_Separated', 'marital.status_Widowed',
+       'race_Asian-Pac-Islander', 'race_Black', 'race_Other', 'race_White',
+       'workclass_Local-gov', 'workclass_Private', 'workclass_Self-emp-inc',
+       'workclass_Self-emp-not-inc', 'workclass_State-gov',
+       'workclass_Without-pay']
+    data_dir = f'../../data/adult/C{num_clients}/'
+    if is_train:
+        train_file = data_dir + 'train_S' + str(idx + 1) + '.csv'
+        train_tmp = pd.read_csv(train_file, index_col=0).reset_index(drop=True)
+        X = train_tmp[['workclass', 'education', 'marital.status', 'race']]
+        X = pd.get_dummies(X, dtype='int', drop_first=True)
+
+        feature_diff = set(col_names) - set(X.columns)
+        if feature_diff:
+            dummy_df = pd.DataFrame(data=np.zeros((X.shape[0], len(feature_diff))), columns=list(feature_diff), index=X.index)
+            X = X.join(dummy_df)
+        X = X.sort_index(axis=1)
+        y = train_tmp['income.new'].to_numpy()
+        train_data = {'x': X, 'y': y, 'sensitive_feature': train_tmp['gender'].map({'Male': 1, 'Female': 0})}
+        X_train = torch.Tensor(np.array(train_data['x'])).type(torch.float32)
+        y_train = torch.Tensor(np.array(train_data['y'])).type(torch.int64)
+        sensitive_feature = torch.Tensor(np.array(train_data['sensitive_feature'])).type(torch.float32)
+        train_data = [(x, y, z) for x, y, z in zip(X_train, y_train, sensitive_feature)]
+        return train_data
+    else:
+        test_file = data_dir + 'tests_S' + str(idx + 1) + '.csv'
+        test_tmp = pd.read_csv(test_file, index_col=0).reset_index(drop=True)
+        X = test_tmp[['workclass', 'education', 'marital.status', 'race']]
+        X = pd.get_dummies(X, dtype='int', drop_first=True)
+
+        feature_diff = set(col_names) - set(X.columns)
+        if feature_diff:
+            dummy_df = pd.DataFrame(data=np.zeros((X.shape[0], len(feature_diff))), columns=list(feature_diff), index=X.index)
+            X = X.join(dummy_df)
+        X = X.sort_index(axis=1)
+        y = test_tmp['income.new'].to_numpy()
+        test_data = {'x': X, 'y': y, 'sensitive_feature': test_tmp['gender'].map({'Male': 1, 'Female': 0})}
+        X_test = torch.Tensor(np.array(test_data['x'])).type(torch.float32)
+        y_test = torch.Tensor(np.array(test_data['y'])).type(torch.int64)
+        sensitive_feature = torch.Tensor(np.array(test_data['sensitive_feature'])).type(torch.float32)
+        test_data = [(x, y, z) for x, y, z in zip(X_test, y_test, sensitive_feature)]
+        return test_data
+
+class BinaryLogisticRegression(nn.Module):
+    # build the constructor
+    def __init__(self, n_inputs):
+        super(BinaryLogisticRegression, self).__init__()
+        self.linear = nn.Linear(n_inputs, 1)
+
+    # make predictions
+    def forward(self, x):
+        y_pred = torch.sigmoid(self.linear(x))
+        return y_pred
+
+def train_model_with_local_lambda(site, total_clients, fairness_lambda, metric='accuracy', out_file=None):
+    print(f"Client {site}, Fairness penalty strength (lambda): {fairness_lambda}", file=out_file)
+    train_data = read_adult_data(idx=site, num_clients=total_clients, is_train=True)
+    test_data = read_adult_data(idx=site, num_clients=total_clients, is_train=False)
+    batch_size = 512
+    train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=False)
+    test_loader = DataLoader(dataset=test_data, batch_size=batch_size, shuffle=False)
+    model = BinaryLogisticRegression(len(train_data[0][0]))
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.3)
+    criterion = GroupFairnessLoss(fairness_lambda=fairness_lambda, L2_gamma=0)
+    epochs = 100
+    acc_list, auc_list, mse_list, fairness_list = [], [], [], []
+    for epoch in range(epochs):
+        for i, (x, y, sensitive_feature) in enumerate(train_loader):
+            optimizer.zero_grad()
+            output = model(x).reshape(1, -1)[0].type(torch.float32)
+            df = pd.DataFrame(x.numpy())
+            df['gender'] = sensitive_feature
+            df['y'] = y.numpy()
+            loss = criterion(output, y.type(torch.float32), dataset=df, sensitive_feature='gender', model=model)
+            loss.backward()
+            optimizer.step()
+
+        y_prob, y_true, y_pred, all_sensitive_feature, X = [], [], [], [], []
+        for x, y, sensitive_feature in test_loader:
+            X.extend(x.numpy())
+            output = model(x).reshape(1, -1)[0].type(torch.float32)
+            predicted = output >= 0.5
+            y_prob.append(output.detach())
+            y_pred.append(predicted.detach())
+            y_true.append(y.detach())
+            all_sensitive_feature.append(sensitive_feature.detach())
+
+        y_prob = np.concatenate(y_prob, axis=0)
+        y_true = np.concatenate(y_true, axis=0)
+        y_pred = np.concatenate(y_pred, axis=0)
+        all_sensitive_feature = np.concatenate(all_sensitive_feature, axis=0)
+
+        accuracy = accuracy_score(y_true, y_pred)
+        auc = roc_auc_score(y_true, y_prob)
+        mse = mean_squared_error(y_true, y_prob)
+        acc_list.append(accuracy)
+        auc_list.append(auc)
+        mse_list.append(mse)
+        print('Epoch: {}. Loss: {}. Accuracy: {}. AUROC: {}. MSE:{}'.format(epoch, loss.item(), accuracy, auc, mse), file=out_file)
+        fairness = fairness_metrics(y_true, y_pred, all_sensitive_feature, X)
+        fairness_list.append(fairness)
+        print(fairness, file=out_file)
+    for p in model.parameters():
+        print(p, file=out_file)
+    if metric == 'accuracy':
+        idx = max(enumerate(acc_list), key=lambda x: x[1])[0]
+        print(f"\nMax Accuracy: {acc_list[idx]}, Iteration: {idx}, AUC: {auc_list[idx]}, MSE: {mse_list[idx]}, "
+              f"Fairness metrics: {fairness_list[idx]}\n", file=out_file)
+    elif metric == 'mse':
+        idx = min(enumerate(mse_list), key=lambda x: x[1])[0]
+        print(f"\nMin MSE: {mse_list[idx]}, Iteration: {idx}, AUC: {auc_list[idx]}, Accuracy: {acc_list[idx]}, "
+              f"Fairness metrics: {fairness_list[idx]}\n", file=out_file)
+    else:
+        raise ValueError("Metric must be either 'accuracy' or 'mse'")
+    return acc_list[idx], auc_list[idx], mse_list[idx], fairness_list[idx]
+
+def train_federated_model_with_gamma(best_lambda_values, total_clients=5, metric='accuracy'):
+    best_gamma_dict = {}
+    gamma_length_1, gamma_length_2 = 10, 10
+    for lambda_value in best_lambda_values:
+        if not os.path.exists(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}'):
+            os.mkdir(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}')
+        gamma_list_1 = np.linspace(1e-4, 0.1, gamma_length_1)
+        with Pool(10) as pool:
+            args = [(lambda_value, gamma_value, total_clients) for gamma_value in gamma_list_1]
+            pool.starmap(run_FedAvg, args)
+        extract_FedAvg_result(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}')
+        result_df = find_best_gamma_value_FL(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}', metric=metric)
+        result_df = result_df.loc[(result_df['lambda'] == lambda_value) & (result_df['gamma'] >= min(gamma_list_1))
+                                  & (result_df['gamma'] <= max(gamma_list_1))]
+        print("After first round:\n", result_df)
+        if metric == 'accuracy':
+            best_idx = result_df['accuracy'].idxmax()
+        elif metric == 'mse':
+            best_idx = result_df['mse'].idxmin()
+        else:
+            raise ValueError("Metric must be either 'accuracy' or 'mse'")
+        print('Best gamma value:', result_df['gamma'][best_idx])
+        gamma_list_2 = np.linspace(result_df['gamma'][0], result_df['gamma'][1], gamma_length_2)
+        # if lambda_value <= 5:
+        #     gamma_list_2 = np.linspace(result_df['gamma'][1], result_df['gamma'][2], gamma_length_2)
+        # elif lambda_value <= 50:
+        #     gamma_list_2 = np.linspace(result_df['gamma'][0], result_df['gamma'][1], gamma_length_2)
+        # else:
+        #     gamma_list_2 = np.linspace(0, result_df['gamma'][0], gamma_length_2)
+        # if best_idx == 0:
+        #     gamma_list_2 = np.linspace(0, result_df['gamma'][1], gamma_length_2)
+        # elif best_idx == result_df.shape[0] - 1:
+        #     diff = result_df['gamma'][-1] - result_df['gamma'][-2]
+        #     gamma_list_2 = np.linspace(result_df['gamma'][-2], result_df['gamma'][-1] + diff, gamma_length_2)
+        # else:
+        #     gamma_list_2 = np.linspace(result_df['gamma'][best_idx - 1], result_df['gamma'][best_idx + 1], gamma_length_2)
+        with Pool(10) as pool:
+            args = [(lambda_value, gamma_value, total_clients) for gamma_value in gamma_list_2]
+            pool.starmap(run_FedAvg, args)
+        # Find the best gamma value for this choice of lambda
+        extract_FedAvg_result(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}')
+        result_df = find_best_gamma_value_FL(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}', metric=metric)
+        result_df = result_df.loc[(result_df['lambda'] == lambda_value)
+                                  & (result_df['gamma'] >= min(gamma_list_2)) & (result_df['gamma'] <= max(gamma_list_2))]
+        print("After second round:\n", result_df)
+        if metric == 'accuracy':
+            best_idx = result_df['accuracy'].idxmax()
+        elif metric == 'mse':
+            best_idx = result_df['mse'].idxmin()
+        else:
+            raise ValueError("Metric must be either 'accuracy' or 'mse'")
+        best_gamma_dict[lambda_value] = result_df.loc[best_idx].to_dict()
+    best_gamma_dict = dict(sorted(best_gamma_dict.items()))
+    return best_gamma_dict
+
+def find_best_local_lambda(site, total_clients, metric_diff=0.05, metric='accuracy', out_file=None):
+    result_lst = []
+    base_acc, base_auc, base_mse, base_fairness = train_model_with_local_lambda(site, total_clients=total_clients, fairness_lambda=0, metric=metric, out_file=out_file)
+    result_lst.append([site, 0, base_acc, base_auc, base_mse, base_fairness['demographic_parity_difference'],
+                       base_fairness['equalized_odds_difference'], base_fairness['consistency'], base_fairness['generalized_entropy_error']])
+    for fairness_lambda in np.linspace(1e-4, 1e4, 1001):
+        acc, auc, mse, fairness = train_model_with_local_lambda(site, total_clients=total_clients, fairness_lambda=fairness_lambda, out_file=out_file)
+        result_lst.append([site, fairness_lambda, acc, auc, mse, fairness['demographic_parity_difference'],
+                           fairness['equalized_odds_difference'], fairness['consistency'], fairness['generalized_entropy_error']])
+        if (metric == 'accuracy' and acc <= (1 - metric_diff) * base_acc) or (metric == 'mse' and mse >= (1 + metric_diff) * base_mse):
+            df = pd.DataFrame.from_records(result_lst, columns=['site', 'lambda', 'acc', 'auc', 'mse', 'dpd', 'eod', 'consistency', 'generalized_entropy_error'])
+            return df
+    df = pd.DataFrame.from_records(result_lst, columns=['site', 'lambda', 'acc', 'auc', 'mse', 'dpd', 'eod', 'consistency', 'generalized_entropy_error'])
+    return df
+
+def find_lambda_for_one_site(site, total_clients):
+    filename = f'outputs/adult/group/local_{total_clients}_sites/local_lambda_site{site}.txt'
+    csv_name = f'outputs/adult/group/local_{total_clients}_sites/local_lambda_site{site}.csv'
+    with open(filename, 'w') as f:
+        df = find_best_local_lambda(site=site, total_clients=total_clients, out_file=f)
+        print(df, file=f)
+        df.to_csv(csv_name, index=False)
+
+def run_PFL(lambda_value, gamma_value, total_clients):
+    if not os.path.exists(f'outputs/adult/group/FL_{total_clients}_sites_new/PerAvg/lambda_{lambda_value}/PFL_group_lambda{lambda_value}_gamma{gamma_value}.txt'):
+        cmd = (f'python -u main.py -datp ../../data/adult/C{total_clients}_new -data adult -m lr -algo PerAvg -lr 0.3 '
+               f'-gr 20 -nb 2 -nc {total_clients} -fn True -fnl group -flambda {lambda_value} -fgamma {gamma_value} '
+               f'| tee outputs/adult/group/FL_{total_clients}_sites_new/PerAvg/lambda_{lambda_value}/PFL_group_lambda{lambda_value}_gamma{gamma_value}.txt')
+        print(cmd)
+        os.system(cmd)
+
+def run_FedAvg(lambda_value, gamma_value, total_clients):
+    if not os.path.exists(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt'):
+        cmd = (f'python -u main.py -datp ../../data/adult/C{total_clients}_new -data adult -m lr -algo FedAvg -lr 0.3 '
+               f'-gr 20 -nb 2 -nc {total_clients} -fn True -fnl group -flambda {lambda_value} -fgamma {gamma_value} '
+               f'| tee outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt')
+        print(cmd)
+        os.system(cmd)
+
+def run_best_PFL_model():
+    lambda_gammma = {0: 0.01275, 0.5: 0.01435, 1: 0.0141, 5: 0.01215, 10: 0.0101, 20: 0.00665, 50: 0.0018}
+    args = [(x, lambda_gammma[x], 5) for x in lambda_gammma]
+    with Pool(7) as pool:
+        pool.starmap(run_PFL, args)
+
+if __name__ == '__main__':
+    # args = [(x, 5) for x in range(5)]
+    # with Pool(5) as pool:
+    #     pool.starmap(find_lambda_for_one_site, args)
+    lambda_values = [50]
+    train_federated_model_with_gamma(lambda_values, total_clients=5, metric='accuracy')
+    # run_best_PFL_model()
