@@ -1,36 +1,14 @@
 import os
+import sys
 from multiprocessing import Pool
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from fairness_loss import IndividualFairnessLoss, GroupFairnessLoss, HybridFairnessLoss, fairness_metrics
+from fairness_loss import GroupFairnessLoss, fairness_metrics
 from sklearn.metrics import accuracy_score, roc_auc_score, mean_squared_error
-from extract_output import extract_PFL_result, find_best_gamma_value, extract_FedAvg_result, find_best_gamma_value_FL
-
-# Pre-decide lambda values for each local dataset
-
-# Rough Psudocode:
-
-# For each lambda value in seq(0.01, 100, 0.1):
-    # train model (with fairness penalty, but without l2 penalty)
-    # evaluate (plot against) model accuracy vs. fairness metrics
-    # decide a few (say five) lambda choices
-      ## there may be different ways to do this.
-      ## can consider something similar to AutoScore/FedScore selection process
-      ## define a threshold, such as auc_fair >= auc_optimal * 0.95
-# For the selected lambda values, 
-# use 5-fold (need to adjust it based on sample size) CV 
-# to tune gamma in 10^seq(-100,3,0.1):
-    # refer to A.1 in the original paper.
-
-# note: since currently data is homogenously splitted, 
-# it's sufficient to do for only one local data.
-## Based on the paper, this is step is always necessary for any new data,
-## since lambda choices vary case by case.
-## therefore this pipeline should be more data driven when releasing
-## to the public.
+from extract_output import extract_FL_result, find_best_gamma_value
 
 def read_adult_data(idx, num_clients, is_train=True):
     col_names = ['education_11th', 'education_12th', 'education_1st-4th',
@@ -46,7 +24,7 @@ def read_adult_data(idx, num_clients, is_train=True):
        'workclass_Local-gov', 'workclass_Private', 'workclass_Self-emp-inc',
        'workclass_Self-emp-not-inc', 'workclass_State-gov',
        'workclass_Without-pay']
-    data_dir = f'../../data/adult/C{num_clients}/'
+    data_dir = f'../data/adult/C{num_clients}/'
     if is_train:
         train_file = data_dir + 'train_S' + str(idx + 1) + '.csv'
         train_tmp = pd.read_csv(train_file, index_col=0).reset_index(drop=True)
@@ -99,7 +77,7 @@ def train_model_with_local_lambda(site, total_clients, fairness_lambda, metric='
     print(f"Client {site}, Fairness penalty strength (lambda): {fairness_lambda}", file=out_file)
     train_data = read_adult_data(idx=site, num_clients=total_clients, is_train=True)
     test_data = read_adult_data(idx=site, num_clients=total_clients, is_train=False)
-    batch_size = 512
+    batch_size = 128
     train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=False)
     test_loader = DataLoader(dataset=test_data, batch_size=batch_size, shuffle=False)
     model = BinaryLogisticRegression(len(train_data[0][0]))
@@ -157,18 +135,21 @@ def train_model_with_local_lambda(site, total_clients, fairness_lambda, metric='
         raise ValueError("Metric must be either 'accuracy' or 'mse'")
     return acc_list[idx], auc_list[idx], mse_list[idx], fairness_list[idx]
 
-def train_federated_model_with_gamma(best_lambda_values, total_clients=5, metric='accuracy'):
+def train_federated_model_with_gamma(best_lambda_values, strategy, total_clients=5, metric='accuracy'):
     best_gamma_dict = {}
     gamma_length_1, gamma_length_2 = 10, 10
     for lambda_value in best_lambda_values:
-        if not os.path.exists(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}'):
-            os.mkdir(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}')
+        if not os.path.exists(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}'):
+            os.mkdir(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}')
         gamma_list_1 = np.linspace(1e-4, 0.1, gamma_length_1)
         with Pool(10) as pool:
             args = [(lambda_value, gamma_value, total_clients) for gamma_value in gamma_list_1]
-            pool.starmap(run_FedAvg, args)
-        extract_FedAvg_result(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}')
-        result_df = find_best_gamma_value_FL(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}', metric=metric)
+            if strategy == 'FedAvg':
+                pool.starmap(run_FedAvg, args)
+            elif strategy == 'PerAvg':
+                pool.starmap(run_PerAvg, args)
+        extract_FL_result(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}')
+        result_df = find_best_gamma_value(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}', metric=metric)
         result_df = result_df.loc[(result_df['lambda'] == lambda_value) & (result_df['gamma'] >= min(gamma_list_1))
                                   & (result_df['gamma'] <= max(gamma_list_1))]
         print("After first round:\n", result_df)
@@ -179,26 +160,21 @@ def train_federated_model_with_gamma(best_lambda_values, total_clients=5, metric
         else:
             raise ValueError("Metric must be either 'accuracy' or 'mse'")
         print('Best gamma value:', result_df['gamma'][best_idx])
-        gamma_list_2 = np.linspace(result_df['gamma'][0], result_df['gamma'][1], gamma_length_2)
-        # if lambda_value <= 5:
-        #     gamma_list_2 = np.linspace(result_df['gamma'][1], result_df['gamma'][2], gamma_length_2)
-        # elif lambda_value <= 50:
-        #     gamma_list_2 = np.linspace(result_df['gamma'][0], result_df['gamma'][1], gamma_length_2)
-        # else:
-        #     gamma_list_2 = np.linspace(0, result_df['gamma'][0], gamma_length_2)
-        # if best_idx == 0:
-        #     gamma_list_2 = np.linspace(0, result_df['gamma'][1], gamma_length_2)
-        # elif best_idx == result_df.shape[0] - 1:
-        #     diff = result_df['gamma'][-1] - result_df['gamma'][-2]
-        #     gamma_list_2 = np.linspace(result_df['gamma'][-2], result_df['gamma'][-1] + diff, gamma_length_2)
-        # else:
-        #     gamma_list_2 = np.linspace(result_df['gamma'][best_idx - 1], result_df['gamma'][best_idx + 1], gamma_length_2)
+        if best_idx == 0:
+            gamma_list_2 = np.linspace(0, result_df['gamma'][1], gamma_length_2)
+        elif best_idx == result_df.shape[0] - 1:
+            diff = result_df['gamma'][-1] - result_df['gamma'][-2]
+            gamma_list_2 = np.linspace(result_df['gamma'][-2], result_df['gamma'][-1] + diff, gamma_length_2)
+        else:
+            gamma_list_2 = np.linspace(result_df['gamma'][best_idx - 1], result_df['gamma'][best_idx + 1], gamma_length_2)
         with Pool(10) as pool:
             args = [(lambda_value, gamma_value, total_clients) for gamma_value in gamma_list_2]
-            pool.starmap(run_FedAvg, args)
-        # Find the best gamma value for this choice of lambda
-        extract_FedAvg_result(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}')
-        result_df = find_best_gamma_value_FL(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}', metric=metric)
+            if strategy == 'FedAvg':
+                pool.starmap(run_FedAvg, args)
+            elif strategy == 'PerAvg':
+                pool.starmap(run_PerAvg, args)
+        extract_FL_result(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}')
+        result_df = find_best_gamma_value(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}', metric=metric)
         result_df = result_df.loc[(result_df['lambda'] == lambda_value)
                                   & (result_df['gamma'] >= min(gamma_list_2)) & (result_df['gamma'] <= max(gamma_list_2))]
         print("After second round:\n", result_df)
@@ -212,12 +188,12 @@ def train_federated_model_with_gamma(best_lambda_values, total_clients=5, metric
     best_gamma_dict = dict(sorted(best_gamma_dict.items()))
     return best_gamma_dict
 
-def find_best_local_lambda(site, total_clients, metric_diff=0.05, metric='accuracy', out_file=None):
+def find_best_local_lambda(site, total_clients, metric_diff=0.01, metric='accuracy', out_file=None):
     result_lst = []
     base_acc, base_auc, base_mse, base_fairness = train_model_with_local_lambda(site, total_clients=total_clients, fairness_lambda=0, metric=metric, out_file=out_file)
     result_lst.append([site, 0, base_acc, base_auc, base_mse, base_fairness['demographic_parity_difference'],
                        base_fairness['equalized_odds_difference'], base_fairness['consistency'], base_fairness['generalized_entropy_error']])
-    for fairness_lambda in np.linspace(1e-4, 1e4, 1001):
+    for fairness_lambda in np.linspace(5, 100, 20):
         acc, auc, mse, fairness = train_model_with_local_lambda(site, total_clients=total_clients, fairness_lambda=fairness_lambda, out_file=out_file)
         result_lst.append([site, fairness_lambda, acc, auc, mse, fairness['demographic_parity_difference'],
                            fairness['equalized_odds_difference'], fairness['consistency'], fairness['generalized_entropy_error']])
@@ -228,39 +204,35 @@ def find_best_local_lambda(site, total_clients, metric_diff=0.05, metric='accura
     return df
 
 def find_lambda_for_one_site(site, total_clients):
-    filename = f'outputs/adult/group/local_{total_clients}_sites/local_lambda_site{site}.txt'
-    csv_name = f'outputs/adult/group/local_{total_clients}_sites/local_lambda_site{site}.csv'
+    filename = f'outputs/adult/local/local_lambda_site{site}.txt'
+    csv_name = f'outputs/adult/local/local_lambda_site{site}.csv'
     with open(filename, 'w') as f:
         df = find_best_local_lambda(site=site, total_clients=total_clients, out_file=f)
         print(df, file=f)
         df.to_csv(csv_name, index=False)
 
-def run_PFL(lambda_value, gamma_value, total_clients):
-    if not os.path.exists(f'outputs/adult/group/FL_{total_clients}_sites_new/PerAvg/lambda_{lambda_value}/PFL_group_lambda{lambda_value}_gamma{gamma_value}.txt'):
-        cmd = (f'python -u main.py -datp ../../data/adult/C{total_clients}_new -data adult -m lr -algo PerAvg -lr 0.3 '
-               f'-gr 20 -nb 2 -nc {total_clients} -fn True -fnl group -flambda {lambda_value} -fgamma {gamma_value} '
-               f'| tee outputs/adult/group/FL_{total_clients}_sites_new/PerAvg/lambda_{lambda_value}/PFL_group_lambda{lambda_value}_gamma{gamma_value}.txt')
+def run_PerAvg(lambda_value, gamma_value, total_clients):
+    if not os.path.exists(f'outputs/adult/FL/PerAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt'):
+        cmd = (f'python -u main.py -datp ../data/adult/C{total_clients} -data adult -m lr -algo PerAvg -lr 0.2 '
+               f'-gr 10 -nb 2 -nc {total_clients} -fn True -fnl group -flambda {lambda_value} -fgamma {gamma_value} '
+               f'| tee outputs/adult/FL/PerAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt')
         print(cmd)
         os.system(cmd)
 
 def run_FedAvg(lambda_value, gamma_value, total_clients):
-    if not os.path.exists(f'outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt'):
-        cmd = (f'python -u main.py -datp ../../data/adult/C{total_clients}_new -data adult -m lr -algo FedAvg -lr 0.3 '
-               f'-gr 20 -nb 2 -nc {total_clients} -fn True -fnl group -flambda {lambda_value} -fgamma {gamma_value} '
-               f'| tee outputs/adult/group/FL_{total_clients}_sites_new/FedAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt')
+    if not os.path.exists(f'outputs/adult/FL/FedAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt'):
+        cmd = (f'python -u main.py -datp ../data/adult/C{total_clients} -data adult -m lr -algo FedAvg -lr 0.2 '
+               f'-gr 10 -nb 2 -nc {total_clients} -fn True -fnl group -flambda {lambda_value} -fgamma {gamma_value} '
+               f'| tee outputs/adult/FL/FedAvg/lambda_{lambda_value}/FL_group_lambda{lambda_value}_gamma{gamma_value}.txt')
         print(cmd)
         os.system(cmd)
 
-def run_best_PFL_model():
-    lambda_gammma = {0: 0.01275, 0.5: 0.01435, 1: 0.0141, 5: 0.01215, 10: 0.0101, 20: 0.00665, 50: 0.0018}
-    args = [(x, lambda_gammma[x], 5) for x in lambda_gammma]
-    with Pool(7) as pool:
-        pool.starmap(run_PFL, args)
-
 if __name__ == '__main__':
-    # args = [(x, 5) for x in range(5)]
-    # with Pool(5) as pool:
-    #     pool.starmap(find_lambda_for_one_site, args)
-    lambda_values = [50]
-    train_federated_model_with_gamma(lambda_values, total_clients=5, metric='accuracy')
-    # run_best_PFL_model()
+    # Find local lambda values for each site
+    args = [(x, 5) for x in range(5)]
+    with Pool(5) as pool:
+        pool.starmap(find_lambda_for_one_site, args)
+    # Finetune gamma values for the selected lambda values
+    strategy = sys.argv[1]
+    lambda_values = [1, 2, 3, 4, 5]
+    train_federated_model_with_gamma(lambda_values, strategy=strategy, total_clients=5, metric='accuracy')

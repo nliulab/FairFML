@@ -5,10 +5,10 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from sklearn.metrics import accuracy_score, roc_auc_score, mean_squared_error
+from sklearn.metrics import accuracy_score, roc_curve, roc_auc_score, mean_squared_error
 from fairlearn.metrics import demographic_parity_difference, demographic_parity_ratio, equalized_odds_difference, equalized_odds_ratio
 from aif360.sklearn.metrics import consistency_score, generalized_entropy_error
-sys.path.append('/Users/qimingwu/DukeNUS/FedScore-Meta/PFL-Non-IID/system')
+sys.path.append('..')
 
 class BinaryLogisticRegression(nn.Module):
     # build the constructor
@@ -35,7 +35,7 @@ def read_adult_data(idx, num_clients, is_train=False):
        'workclass_Local-gov', 'workclass_Private', 'workclass_Self-emp-inc',
        'workclass_Self-emp-not-inc', 'workclass_State-gov',
        'workclass_Without-pay']
-    data_dir = f'../../../data/adult/C{num_clients}_new/'
+    data_dir = f'../../data/adult/C{num_clients}/'
     if is_train:
         train_file = data_dir + 'train_S' + str(idx + 1) + '.csv'
         train_tmp = pd.read_csv(train_file, index_col=0).reset_index(drop=True)
@@ -84,12 +84,12 @@ def fairness_metrics(y_true, y_pred, sensitive_feature, X):
     return res_dict
 
 
-def evaluate_server_models():
+def evaluate_server_models(strategy):
     result_lst = []
     for site in range(5):
         test_data = read_adult_data(site, num_clients=5)
-        test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=False)
-        model_directory = '../outputs/adult/models/group/PerAvg'
+        test_loader = DataLoader(dataset=test_data, batch_size=1024, shuffle=False)
+        model_directory = f'../outputs/adult/models/group/{strategy}'
         for root, dirs, files in os.walk(model_directory):
             for file in files:
                 if not file.endswith('.pt') or 'server' not in file:
@@ -125,15 +125,15 @@ def evaluate_server_models():
     result_df = pd.DataFrame.from_records(result_lst, columns=['site', 'lambda', 'gamma', 'epoch', 'accuracy', 'AUC', 'MSE', 'DPD', 'DPR', 'EOD', 'EOR', 'consistency', 'generalized_entropy_error'])
     result_df = result_df.sort_values(by=['site', 'lambda', 'gamma', 'epoch']).reset_index(drop=True)
     print(result_df)
-    result_df.to_csv('../outputs/adult/group/FL_5_sites_new/PerAvg/test_results_server_model.csv', index=False)
-    split_result(model_type='server')
+    result_df.to_csv(f'../outputs/adult/FL/{strategy}/test_results_server_model.csv', index=False)
+    split_result(model_type='server', strategy=strategy)
 
-def evaluate_client_models():
+def evaluate_client_models(strategy):
     result_lst = []
     for site in range(5):
         test_data = read_adult_data(site, num_clients=5)
-        test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=False)
-        model_directory = '../outputs/adult/models/group/PerAvg'
+        test_loader = DataLoader(dataset=test_data, batch_size=1024, shuffle=False)
+        model_directory = f'../outputs/adult/models/group/{strategy}'
         for root, dirs, files in os.walk(model_directory):
             for file in files:
                 if not file.endswith('.pt') or f'client{site}' not in file:
@@ -170,26 +170,24 @@ def evaluate_client_models():
     result_df = pd.DataFrame.from_records(result_lst, columns=['site', 'lambda', 'gamma', 'epoch', 'accuracy', 'AUC', 'MSE', 'DPD', 'DPR', 'EOD', 'EOR', 'consistency', 'generalized_entropy_error'])
     result_df = result_df.sort_values(by=['site', 'lambda', 'gamma', 'epoch']).reset_index(drop=True)
     print(result_df)
-    result_df.to_csv('../outputs/adult/group/FL_5_sites_new/PerAvg/test_results_client_model.csv', index=False)
-    split_result(model_type='client')
+    result_df.to_csv(f'../outputs/adult/FL/{strategy}/test_results_client_model.csv', index=False)
+    split_result(model_type='client', strategy=strategy)
 
-def split_result(model_type='server'):
-    data = pd.read_csv(f'../outputs/adult/group/FL_5_sites_new/PerAvg/test_results_{model_type}_model.csv')
+def split_result(model_type, strategy):
+    data = pd.read_csv(f'../outputs/adult/FL/{strategy}/test_results_{model_type}_model.csv')
     for lambda_val in set(data['lambda']):
         data_part = data[data['lambda'] == lambda_val]
         if int(lambda_val) != lambda_val:
-            data_part.to_csv(f'../outputs/adult/group/FL_5_sites_new/PerAvg/lambda_{lambda_val}/test_result_lambda{lambda_val}_{model_type}_model.csv', index=False)
+            data_part.to_csv(f'../outputs/adult/FL/{strategy}/lambda_{lambda_val}/test_result_lambda{lambda_val}_{model_type}_model.csv', index=False)
         else:
-            data_part.to_csv(f'../outputs/adult/group/FL_5_sites_new/PerAvg/lambda_{int(lambda_val)}/test_result_lambda{int(lambda_val)}_{model_type}_model.csv', index=False)
-
-def print_model_coefficients(model_path):
-    model = torch.load(model_path)
-    torch.set_printoptions(precision=4, sci_mode=False)
-    for param in model.parameters():
-        print(param)
+            data_part.to_csv(f'../outputs/adult/FL/{strategy}/lambda_{int(lambda_val)}/test_result_lambda{int(lambda_val)}_{model_type}_model.csv', index=False)
 
 
 if __name__ == '__main__':
-    evaluate_server_models()
-    evaluate_client_models()
+    strategy = sys.argv[1]
+    if strategy == 'FedAvg':
+        evaluate_server_models(strategy)
+    elif strategy == 'PerAvg':
+        evaluate_server_models(strategy)
+        evaluate_client_models(strategy)
 
