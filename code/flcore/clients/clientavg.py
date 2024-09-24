@@ -16,7 +16,6 @@ class clientAVG(Client):
 
     def train(self, new_local_epochs):
         trainloader = self.load_train_data()
-        # self.model.to(self.device)
         self.model.train()
         
         # differential privacy

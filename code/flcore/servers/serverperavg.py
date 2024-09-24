@@ -23,7 +23,7 @@ class PerAvg(Server):
             # send all parameter for clients
             self.send_models()
 
-            if i%self.eval_gap == 0 and i != 0:
+            if i % self.eval_gap == 0 and i != 0:
                 print(f"\n------------Round number: {i}-------------")
                 print("\nbefore SGD")
                 self.evaluate()
@@ -97,5 +97,4 @@ class PerAvg(Server):
 
         print("Averaged Train Loss: {:.4f}".format(train_loss))
         print("Averaged Test Accuracy: {:.4f}".format(test_acc))
-        # self.print_(test_acc, train_acc, train_loss)
         print("Std Test Accuracy: {:.4f}".format(np.std(accs)))

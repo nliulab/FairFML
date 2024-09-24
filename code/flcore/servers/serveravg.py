@@ -17,33 +17,23 @@ class FedAvg(Server):
         print(f"\nJoin ratio / total clients: {self.join_ratio} / {self.num_clients}")
         print("Finished creating server and clients.")
 
-        # self.load_model()
         self.Budget = []
 
 
     def train(self, new_local_epochs):
-        for i in range(self.global_rounds+1):
+        for i in range(self.global_rounds + 1):
             s_t = time.time()
             self.selected_clients = self.select_clients()
             self.send_models()
 
-            if i%self.eval_gap == 0 and i != 0:
+            if i % self.eval_gap == 0 and i != 0:
                 print(f"\n-------------Round number: {i}-------------")
                 print("\nEvaluate global model")
                 self.evaluate()
-            count=0
+            count = 0
             for client in self.selected_clients:
-                #client.train()
                 client.train(new_local_epochs=new_local_epochs[count])
-                #print("Local_epochs: {}\n".format(new_local_epochs[count]))
-                #client.train(new_local_epochs=new_local_epochs[client_th[count]])
-                count+=1
-
-
-            # threads = [Thread(target=client.train)
-            #            for client in self.selected_clients]
-            # [t.start() for t in threads]
-            # [t.join() for t in threads]
+                count += 1
 
             self.receive_models()
             if self.dlg_eval and i%self.dlg_gap == 0:
@@ -58,8 +48,6 @@ class FedAvg(Server):
                 break
 
         print("\nBest accuracy.")
-        # self.print_(max(self.rs_test_acc), max(
-        #     self.rs_train_acc), min(self.rs_train_loss))
         print(max(self.rs_test_acc))
         print("\nAverage time cost per round.")
         print(sum(self.Budget[1:])/len(self.Budget[1:]))

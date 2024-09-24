@@ -6,9 +6,8 @@ import copy
 import torch.nn as nn
 from flcore.optimizers.fedoptimizer import PerAvgOptimizer
 from flcore.clients.clientbase import Client
-from utils.data_utils import read_client_data
-from torch.utils.data import DataLoader
 from ..trainmodel.models import BinaryLogisticRegression
+from sklearn.preprocessing import label_binarize
 from sklearn import metrics
 from utils.fairness_loss import IndividualFairnessLoss, GroupFairnessLoss, HybridFairnessLoss
 
@@ -256,12 +255,6 @@ class clientPerAvg(Client):
 
         y_prob = np.concatenate(y_prob, axis=0)
         y_true = np.concatenate(y_true, axis=0)
-        fpr, tpr, thresholds = metrics.roc_curve(y_true, y_prob)
-        optimal_idx = np.argmax(tpr - fpr)
-        optimal_threshold = thresholds[optimal_idx]
-        print('Optimal threshold:', optimal_threshold)
-
         auroc = metrics.roc_auc_score(y_true, y_prob, average='micro')
         auprc = metrics.average_precision_score(y_true, y_prob, average='micro')
-
         return test_acc, test_num, auroc, auprc

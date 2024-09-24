@@ -6,7 +6,6 @@ import pandas as pd
 from fairlearn.metrics import demographic_parity_ratio, demographic_parity_difference, equalized_odds_ratio, equalized_odds_difference
 from aif360.sklearn.metrics import consistency_score, generalized_entropy_error
 
-
 class IndividualFairnessLoss(nn.Module):
     def __init__(self, fairness_lambda=1, L2_gamma=0):
         super(IndividualFairnessLoss, self).__init__()

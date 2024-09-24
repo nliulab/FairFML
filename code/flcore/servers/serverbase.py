@@ -72,12 +72,8 @@ class Server(object):
         for i, train_slow, send_slow in zip(range(self.num_clients), self.train_slow_clients, self.send_slow_clients):
             train_data = read_client_data(self.datapath,self.dataset, i, is_train=True)
             test_data = read_client_data(self.datapath,self.dataset, i, is_train=False)
-            client = clientObj(self.args, 
-                            id=i, 
-                            train_samples=len(train_data), 
-                            test_samples=len(test_data), 
-                            train_slow=train_slow, 
-                            send_slow=send_slow)
+            client = clientObj(self.args, id=i, train_samples=len(train_data), test_samples=len(test_data),
+                               train_slow=train_slow, send_slow=send_slow)
             self.clients.append(client)
 
     # random select slow clients
@@ -257,9 +253,7 @@ class Server(object):
             cl, ns = c.train_metrics()
             num_samples.append(ns)
             losses.append(cl*1.0)
-
         ids = [c.id for c in self.clients]
-
         return ids, num_samples, losses
 
     # evaluate selected clients
@@ -289,7 +283,6 @@ class Server(object):
         print("Averaged Test Accuracy: {:.4f}".format(test_acc))
         print("Averaged Test AUROC: {:.4f}".format(test_auroc))
         print("Averaged Test AUPRC: {:.4f}".format(test_auprc))
-        # self.print_(test_acc, train_acc, train_loss)
         print("Std Test Accuracy: {:.4f}".format(np.std(accs)))
         print("Std Test AUROC: {:.4f}".format(np.std(aurocs)))
         print("Std Test AUPRC: {:.4f}".format(np.std(auprcs)))
@@ -326,7 +319,7 @@ class Server(object):
         return True
 
     def call_dlg(self, R):
-        # items = []
+        items = []
         cnt = 0
         psnr_val = 0
         for cid, client_model in zip(self.uploaded_ids, self.uploaded_models):
@@ -354,15 +347,14 @@ class Server(object):
             if d is not None:
                 psnr_val += d
                 cnt += 1
-            
-            # items.append((client_model, origin_grad, target_inputs))
-                
+            items.append((client_model, origin_grad, target_inputs))
+
         if cnt > 0:
             print('PSNR value is {:.2f} dB'.format(psnr_val / cnt))
         else:
             print('PSNR error')
 
-        # self.save_item(items, f'DLG_{R}')
+        self.save_item(items, f'DLG_{R}')
 
     def set_new_clients(self, clientObj):
         for i in range(self.num_clients, self.num_clients + self.num_new_clients):
@@ -407,7 +399,5 @@ class Server(object):
             tot_correct.append(ct*1.0)
             tot_auc.append(auc*ns)
             num_samples.append(ns)
-
         ids = [c.id for c in self.new_clients]
-
         return ids, num_samples, tot_correct, tot_auc

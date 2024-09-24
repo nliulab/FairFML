@@ -7,21 +7,16 @@ from torch.utils.data import DataLoader
 from fairness_loss import GroupFairnessLoss, fairness_metrics
 from sklearn.metrics import accuracy_score, roc_auc_score, mean_squared_error
 
-
 def read_adult_data(idx, num_clients, is_train=True):
-    col_names = ['education_11th', 'education_12th', 'education_1st-4th',
-       'education_5th-6th', 'education_7th-8th', 'education_9th',
-       'education_Assoc-acdm', 'education_Assoc-voc', 'education_Bachelors',
-       'education_Doctorate', 'education_HS-grad', 'education_Masters',
-       'education_Preschool', 'education_Prof-school',
-       'education_Some-college', 'marital.status_Married-AF-spouse',
-       'marital.status_Married-civ-spouse',
-       'marital.status_Married-spouse-absent', 'marital.status_Never-married',
-       'marital.status_Separated', 'marital.status_Widowed',
-       'race_Asian-Pac-Islander', 'race_Black', 'race_Other', 'race_White',
-       'workclass_Local-gov', 'workclass_Private', 'workclass_Self-emp-inc',
-       'workclass_Self-emp-not-inc', 'workclass_State-gov',
-       'workclass_Without-pay']
+    col_names = ['education_11th', 'education_12th', 'education_1st-4th', 'education_5th-6th','education_7th-8th',
+                 'education_9th', 'education_Assoc-acdm', 'education_Assoc-voc', 'education_Bachelors',
+                 'education_Doctorate', 'education_HS-grad', 'education_Masters', 'education_Preschool',
+                 'education_Prof-school', 'education_Some-college', 'marital.status_Married-AF-spouse',
+                 'marital.status_Married-civ-spouse', 'marital.status_Married-spouse-absent',
+                 'marital.status_Never-married', 'marital.status_Separated', 'marital.status_Widowed',
+                 'race_Asian-Pac-Islander', 'race_Black', 'race_Other', 'race_White', 'workclass_Local-gov',
+                 'workclass_Private', 'workclass_Self-emp-inc', 'workclass_Self-emp-not-inc', 'workclass_State-gov',
+                 'workclass_Without-pay']
     data_dir = f'../data/adult/C{num_clients}/'
     if is_train:
         train_file = data_dir + 'train_S' + str(idx + 1) + '.csv'
