@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
 import numpy as np
@@ -44,15 +42,6 @@ def DLG(net, origin_grad, target_inputs):
                 return grad_diff
             
             optimizer.step(closure)
-
-        # plt.figure(figsize=(3*len(history), 4))
-        # for i in range(len(history)):
-        #     plt.subplot(1, len(history), i + 1)
-        #     plt.imshow(history[i])
-        #     plt.title("iter=%d" % (i * 10))
-        #     plt.axis('off')
-
-        # plt.savefig(f'dlg_{algo}_{cid}_{idx}' + '.pdf', bbox_inches="tight")
 
         history.append(F.sigmoid(dummy_data).data.cpu().numpy())
         

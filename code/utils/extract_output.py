@@ -79,7 +79,6 @@ def find_best_gamma_value(directory, metric='accuracy'):
                                 EOD = float(lines[i + 4].strip('\n').split(':')[-1].strip('-\n'))
                                 consistency = float(lines[i + 5].strip('\n').split(':')[-1].strip('-\n'))
                                 gee = float(lines[i + 6].strip('\n').split(':')[-1].strip('-\n'))
-                    # result_list.append([lambda_value, gamma_value, max_accuracy, AUC, MSE, DPD, EOD])
                     result_list.append([lambda_value, gamma_value, max_accuracy, AUC, MSE, DPD, EOD, consistency, gee])
                 elif metric == 'mse':
                     min_mse = np.inf
@@ -104,6 +103,7 @@ def find_best_gamma_value(directory, metric='accuracy'):
     result_df = result_df.sort_values(by=['lambda', 'gamma']).reset_index(drop=True)
     result_df.to_csv(os.path.join(directory, 'FL_lambda_gamma_' + metric + '_result.csv'), index=False)
     return result_df
+
 
 if __name__ == '__main__':
     directory = sys.argv[1]
