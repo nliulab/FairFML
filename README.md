@@ -10,7 +10,7 @@ Mitigating algorithmic disparities is a critical challenge in healthcare researc
 
 ## System requirements
 
-The implemented has been developed and tested with Python 3.11.  
+The implementation was developed and tested with Python 3.11.  
 Install required Python packages by running
 ```
 pip install -r requirements.txt
