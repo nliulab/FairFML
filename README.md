@@ -17,6 +17,11 @@ pip install -r requirements.txt
 ```
 ## Example: Run FairFML on Adult dataset
 The following commands are to be run in the `code` directory.
+- Step 0: Train and evaluate baseline models:
+```
+python baseline_models.py
+```
+The central model is trained on all available training data and evaluated on all test data and test data at each client. Local models are trained and evaluated on data at each client.
 - Step 1: Train local models and find values of lambda for each client
 ```
 python utils/tune_local_lambda_adult.py
@@ -30,7 +35,7 @@ For example, to use personalized FedAvg (PerAvg), run
 ```
 python utils/tune_FL_gamma_adult.py PerAvg
 ```
-Raw outputs (txt files) and summary of results (csv files) are saved in `code/outputs/adult/FL/PerAvg`. Trained models are saved in `code/outputs/adult/models/group/PerAvg`.
+Raw outputs (txt files) and summary of results on validation set (csv files) are saved in `code/outputs/adult/FL/PerAvg`. Trained models are saved in `code/outputs/adult/models/group/PerAvg`.
 
 - Step 3: Evaluate trained FL models
 ```
