@@ -45,7 +45,10 @@ To use PerAvg, run
 ```
 python utils/evaluate_adult_test.py PerAvg
 ```
-For PerAvg, both server-side and client-side models will be evaluated. Results will be saved in `code/outputs/adult/FL/PerAvg` with file names `test_results_server_model.csv` and `test_results_client_model.csv`. Results for each lambda value will also be saved in each directory (e.g. `code/outputs/adult/FL/PerAvg/lambda_1/test_result_lambda1_server_model.csv`).
+For PerAvg, both server-side and client-side models will be evaluated. Results will be saved in `code/outputs/adult/FL/PerAvg` as `test_results_server_model.csv` and `test_results_client_model.csv`. Results for each lambda value will also be saved in each directory (e.g. `code/outputs/adult/FL/PerAvg/lambda_1/test_result_lambda1_server_model.csv`).
+
+## Implementing Additional FL Algorithms
+Currently, FairFML is only implemented for FedAvg and PerAvg based on [PFLlib](https://github.com/TsingZ0/PFLlib). Other FL algorithms available in PFLlib can be adapted by incorporating fairness penalty in the loss function. Check out our code for details.
 
 ## Contact
 - Siqi Li (Email: <siqili@u.duke.nus.edu>)
