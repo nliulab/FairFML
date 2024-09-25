@@ -260,7 +260,7 @@ class FedAvgLogit(nn.Module):
     def forward(self, x):
         x = torch.flatten(x, 1)
         x = self.fc(x)
-        output = torch.sigmoid(x)  # 使用 logistic 函数作为输出激活函数
+        output = torch.sigmoid(x)
         return output
 # ====================================================================================================================
 

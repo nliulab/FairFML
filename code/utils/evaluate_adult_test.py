@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from sklearn.metrics import accuracy_score, roc_curve, roc_auc_score, mean_squared_error
 from fairlearn.metrics import demographic_parity_difference, demographic_parity_ratio, equalized_odds_difference, equalized_odds_ratio
 from aif360.sklearn.metrics import consistency_score, generalized_entropy_error
-sys.path.append('..')
+sys.path.append('.')
 
 class BinaryLogisticRegression(nn.Module):
     # build the constructor
@@ -32,7 +32,7 @@ def read_adult_data(idx, num_clients):
                  'marital.status_Separated', 'marital.status_Widowed', 'race_Asian-Pac-Islander',
                  'race_Black', 'race_Other', 'race_White', 'workclass_Local-gov', 'workclass_Private',
                  'workclass_Self-emp-inc', 'workclass_Self-emp-not-inc', 'workclass_State-gov', 'workclass_Without-pay']
-    data_dir = f'../../data/adult/C{num_clients}/'
+    data_dir = f'../data/adult/C{num_clients}/'
     test_file = data_dir + 'tests_S' + str(idx + 1) + '.csv'
     test_tmp = pd.read_csv(test_file, index_col=0).reset_index(drop=True)
     X = test_tmp[['workclass', 'education', 'marital.status', 'race']]
@@ -61,18 +61,18 @@ def fairness_metrics(y_true, y_pred, sensitive_feature, X):
     res_dict['generalized_entropy_error'] = generalized_entropy_error(y_true, y_pred)
     return res_dict
 
-def evaluate_server_models(strategy):
+def evaluate_server_models(strategy, threshold=0.5):
     result_lst = []
     for site in range(5):
         test_data = read_adult_data(site, num_clients=5)
         test_loader = DataLoader(dataset=test_data, batch_size=1024, shuffle=False)
-        model_directory = f'../outputs/adult/models/group/{strategy}'
+        model_directory = f'outputs/adult/models/group/{strategy}'
         for root, dirs, files in os.walk(model_directory):
             for file in files:
                 if not file.endswith('.pt') or 'server' not in file:
                     continue
                 model_path_split = os.path.join(root, file).split('/')
-                lambda_val, gamma_val = float(model_path_split[6].split('_')[-1]), float(model_path_split[7].split('_')[-1])
+                lambda_val, gamma_val = float(model_path_split[5].split('_')[-1]), float(model_path_split[6].split('_')[-1])
                 round_number = int('_'.join(file.split('.')[0].split('_')[-1]))
                 if round_number != 10:
                     continue
@@ -82,15 +82,19 @@ def evaluate_server_models(strategy):
                 for x, y, sensitive_feature in test_loader:
                     X.extend(x.numpy())
                     output = model(x).reshape(1, -1)[0].type(torch.float32)
-                    predicted = output >= 0.5
                     y_prob.append(output.detach())
-                    y_pred.append(predicted.detach())
                     y_true.append(y.detach())
                     all_sensitive_feature.append(sensitive_feature.detach())
 
                 y_prob = np.concatenate(y_prob, axis=0)
                 y_true = np.concatenate(y_true, axis=0)
-                y_pred = np.concatenate(y_pred, axis=0)
+                if threshold == 'best':
+                    fpr, tpr, thresholds = roc_curve(y_true, y_prob)
+                    optimal_idx = np.argmax(tpr - fpr)
+                    optimal_threshold = thresholds[optimal_idx]
+                    y_pred = (y_prob >= optimal_threshold).astype('int')
+                else:
+                    y_pred = (y_prob >= threshold).astype('int')
                 all_sensitive_feature = np.concatenate(all_sensitive_feature, axis=0)
 
                 accuracy = accuracy_score(y_true, y_pred)
@@ -102,21 +106,21 @@ def evaluate_server_models(strategy):
     result_df = pd.DataFrame.from_records(result_lst, columns=['site', 'lambda', 'gamma', 'epoch', 'accuracy', 'AUC', 'MSE', 'DPD', 'DPR', 'EOD', 'EOR', 'consistency', 'generalized_entropy_error'])
     result_df = result_df.sort_values(by=['site', 'lambda', 'gamma', 'epoch']).reset_index(drop=True)
     print(result_df)
-    result_df.to_csv(f'../outputs/adult/FL/{strategy}/test_results_server_model.csv', index=False)
+    result_df.to_csv(f'outputs/adult/FL/{strategy}/test_results_server_model.csv', index=False)
     split_result(model_type='server', strategy=strategy)
 
-def evaluate_client_models(strategy):
+def evaluate_client_models(strategy, threshold=0.5):
     result_lst = []
     for site in range(5):
         test_data = read_adult_data(site, num_clients=5)
         test_loader = DataLoader(dataset=test_data, batch_size=1024, shuffle=False)
-        model_directory = f'../outputs/adult/models/group/{strategy}'
+        model_directory = f'outputs/adult/models/group/{strategy}'
         for root, dirs, files in os.walk(model_directory):
             for file in files:
                 if not file.endswith('.pt') or f'client{site}' not in file:
                     continue
                 model_path_split = os.path.join(root, file).split('/')
-                lambda_val, gamma_val = float(model_path_split[6].split('_')[-1]), float(model_path_split[7].split('_')[-1])
+                lambda_val, gamma_val = float(model_path_split[5].split('_')[-1]), float(model_path_split[6].split('_')[-1])
                 round_number = int('_'.join(file.split('.')[0].split('_')[-1]))
                 if round_number != 10:
                     continue
@@ -127,15 +131,20 @@ def evaluate_client_models(strategy):
                 for x, y, sensitive_feature in test_loader:
                     X.extend(x.numpy())
                     output = model(x).reshape(1, -1)[0].type(torch.float32)
-                    predicted = output >= 0.5
+                    predicted = output >= threshold
                     y_prob.append(output.detach())
-                    y_pred.append(predicted.detach())
                     y_true.append(y.detach())
                     all_sensitive_feature.append(sensitive_feature.detach())
 
                 y_prob = np.concatenate(y_prob, axis=0)
                 y_true = np.concatenate(y_true, axis=0)
-                y_pred = np.concatenate(y_pred, axis=0)
+                if threshold == 'best':
+                    fpr, tpr, thresholds = roc_curve(y_true, y_prob)
+                    optimal_idx = np.argmax(tpr - fpr)
+                    optimal_threshold = thresholds[optimal_idx]
+                    y_pred = (y_prob >= optimal_threshold).astype('int')
+                else:
+                    y_pred = (y_prob >= threshold).astype('int')
                 all_sensitive_feature = np.concatenate(all_sensitive_feature, axis=0)
 
                 accuracy = accuracy_score(y_true, y_pred)
@@ -147,17 +156,17 @@ def evaluate_client_models(strategy):
     result_df = pd.DataFrame.from_records(result_lst, columns=['site', 'lambda', 'gamma', 'epoch', 'accuracy', 'AUC', 'MSE', 'DPD', 'DPR', 'EOD', 'EOR', 'consistency', 'generalized_entropy_error'])
     result_df = result_df.sort_values(by=['site', 'lambda', 'gamma', 'epoch']).reset_index(drop=True)
     print(result_df)
-    result_df.to_csv(f'../outputs/adult/FL/{strategy}/test_results_client_model.csv', index=False)
+    result_df.to_csv(f'outputs/adult/FL/{strategy}/test_results_client_model.csv', index=False)
     split_result(model_type='client', strategy=strategy)
 
 def split_result(model_type, strategy):
-    data = pd.read_csv(f'../outputs/adult/FL/{strategy}/test_results_{model_type}_model.csv')
+    data = pd.read_csv(f'outputs/adult/FL/{strategy}/test_results_{model_type}_model.csv')
     for lambda_val in set(data['lambda']):
         data_part = data[data['lambda'] == lambda_val]
         if int(lambda_val) != lambda_val:
-            data_part.to_csv(f'../outputs/adult/FL/{strategy}/lambda_{lambda_val}/test_result_lambda{lambda_val}_{model_type}_model.csv', index=False)
+            data_part.to_csv(f'outputs/adult/FL/{strategy}/lambda_{lambda_val}/test_result_lambda{lambda_val}_{model_type}_model.csv', index=False)
         else:
-            data_part.to_csv(f'../outputs/adult/FL/{strategy}/lambda_{int(lambda_val)}/test_result_lambda{int(lambda_val)}_{model_type}_model.csv', index=False)
+            data_part.to_csv(f'outputs/adult/FL/{strategy}/lambda_{int(lambda_val)}/test_result_lambda{int(lambda_val)}_{model_type}_model.csv', index=False)
 
 
 if __name__ == '__main__':

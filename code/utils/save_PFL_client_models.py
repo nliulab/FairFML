@@ -4,8 +4,8 @@ from collections import OrderedDict
 import os
 import sys
 
-def save_PFL_client_models(strategy):
-    directory = f'../outputs/adult/FL/{strategy}/'
+def save_PFL_client_models():
+    directory = f'outputs/adult/FL/PerAvg/'
     for root, dirs, files in os.walk(directory):
         for file in files:
             if not (file.startswith('FL') and file.endswith('.txt')):
@@ -28,10 +28,9 @@ def save_PFL_client_models(strategy):
                             j += 1
                         state_dict['linear.weight'] = eval(model_coef)
                         state_dict['linear.bias'] = eval(lines[j + 1].strip('\n')[8:])
-                        output_filename = f'../outputs/adult/models/group/{strategy}/lambda_{lambda_val}/gamma_{gamma_val}/{strategy}_client{client_id}_{round_num}.pt'
+                        output_filename = f'outputs/adult/models/group/PerAvg/lambda_{lambda_val}/gamma_{gamma_val}/PerAvg_client{client_id}_{round_num}.pt'
                         torch.save(state_dict, output_filename)
 
 
 if __name__ == '__main__':
-    strategy = sys.argv[1]
-    save_PFL_client_models(strategy)
+    save_PFL_client_models()

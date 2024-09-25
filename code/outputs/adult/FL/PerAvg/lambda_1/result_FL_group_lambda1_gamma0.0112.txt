@@ -1,0 +1,191 @@
+Experiment setup options:
+
+Batch size: 64
+Learning rate: 0.2
+Number of clients: 5
+Dataset: adult
+Global rounds: 10
+Use fairness penalty: True
+Fairness loss function: group loss
+Fairness loss lambda: 1.0
+Fairness L2 gamma: 0.0112
+
+Round 1:
+Before personalized one-step SGD:
+Mean test accuracy: 0.8032424465733236
+Mean test AUC: 0.8289726858775647
+Mean MSE: 0.1407842187004663
+Mean demographic parity difference:  0.11710744155887867
+Mean equalized odds difference: 0.10324783204639826
+Mean consistency: 0.9847310243183492
+Mean generalized entropy error: 0.11860496685219198
+After personalized one-step SGD:
+Mean test accuracy: 0.7904200442151805
+Mean test AUC: 0.8290947608131025
+Mean MSE: 0.1408291480503517
+Mean demographic parity difference:  0.08266317911834582
+Mean equalized odds difference: 0.07374342215055446
+Mean consistency: 0.9863227708179808
+Mean generalized entropy error: 0.13041715334328485
+
+Round 2:
+Before personalized one-step SGD:
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8294671359437638
+Mean MSE: 0.1405475845048628
+Mean demographic parity difference:  0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9852910832719235
+Mean generalized entropy error: 0.13925833096775317
+After personalized one-step SGD:
+Mean test accuracy: 0.7973470891672808
+Mean test AUC: 0.8299020926321492
+Mean MSE: 0.14067271584301233
+Mean demographic parity difference:  0.10446883723541414
+Mean equalized odds difference: 0.08442062056985847
+Mean consistency: 0.9854974207811349
+Mean generalized entropy error: 0.12398747241507616
+
+Round 3:
+Before personalized one-step SGD:
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8309856729239417
+Mean MSE: 0.1405627002276952
+Mean demographic parity difference:  0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.986617538688283
+Mean generalized entropy error: 0.13925833096775317
+After personalized one-step SGD:
+Mean test accuracy: 0.7929255711127488
+Mean test AUC: 0.8302281765355197
+Mean MSE: 0.14038959873409323
+Mean demographic parity difference:  0.09371134442519478
+Mean equalized odds difference: 0.08863527844096208
+Mean consistency: 0.98484893146647
+Mean generalized entropy error: 0.12826849851006306
+
+Round 4:
+Before personalized one-step SGD:
+Mean test accuracy: 0.8097273397199706
+Mean test AUC: 0.8308834393505602
+Mean MSE: 0.14042125123988028
+Mean demographic parity difference:  0.12894376627746104
+Mean equalized odds difference: 0.11696509004360586
+Mean consistency: 0.9858511422254974
+Mean generalized entropy error: 0.11308831839765762
+After personalized one-step SGD:
+Mean test accuracy: 0.7964627855563744
+Mean test AUC: 0.8298806670198787
+Mean MSE: 0.14030457922913173
+Mean demographic parity difference:  0.0953556533572393
+Mean equalized odds difference: 0.07862308134608162
+Mean consistency: 0.9868238761974946
+Mean generalized entropy error: 0.1248955067157672
+
+Round 5:
+Before personalized one-step SGD:
+Mean test accuracy: 0.8088430361090642
+Mean test AUC: 0.8302068674040016
+Mean MSE: 0.14043450131715232
+Mean demographic parity difference:  0.1262959880427062
+Mean equalized odds difference: 0.11053319001934214
+Mean consistency: 0.9867059690493737
+Mean generalized entropy error: 0.11384998253144679
+After personalized one-step SGD:
+Mean test accuracy: 0.8045689019896831
+Mean test AUC: 0.8303365712482129
+Mean MSE: 0.14017523878071625
+Mean demographic parity difference:  0.11101344894222981
+Mean equalized odds difference: 0.10423618130106277
+Mean consistency: 0.9857037582903464
+Mean generalized entropy error: 0.11793911010712879
+
+Round 6:
+Before personalized one-step SGD:
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8302060313104952
+Mean MSE: 0.14045520546370976
+Mean demographic parity difference:  0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.98620486366986
+Mean generalized entropy error: 0.13925833096775317
+After personalized one-step SGD:
+Mean test accuracy: 0.7879145173176124
+Mean test AUC: 0.82917303585342
+Mean MSE: 0.14103239070880372
+Mean demographic parity difference:  0.07273102088367824
+Mean equalized odds difference: 0.06689612790380049
+Mean consistency: 0.9862932940309507
+Mean generalized entropy error: 0.13268857306716755
+
+Round 7:
+Before personalized one-step SGD:
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8305908294869138
+Mean MSE: 0.14030284241374175
+Mean demographic parity difference:  0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9864701547531319
+Mean generalized entropy error: 0.13925833096775317
+After personalized one-step SGD:
+Mean test accuracy: 0.8033898305084746
+Mean test AUC: 0.8307762165113448
+Mean MSE: 0.14030130975941998
+Mean demographic parity difference:  0.11731273807767194
+Mean equalized odds difference: 0.106464047714362
+Mean consistency: 0.9855858511422255
+Mean generalized entropy error: 0.11875050154946236
+
+Round 8:
+Before personalized one-step SGD:
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8301566059104788
+Mean MSE: 0.14078603778004598
+Mean demographic parity difference:  0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9860280029476787
+Mean generalized entropy error: 0.13925833096775317
+After personalized one-step SGD:
+Mean test accuracy: 0.7893883566691231
+Mean test AUC: 0.8291804592965678
+Mean MSE: 0.140928605313528
+Mean demographic parity difference:  0.0809518044013639
+Mean equalized odds difference: 0.07425460745594509
+Mean consistency: 0.9858216654384673
+Mean generalized entropy error: 0.13131425361866209
+
+Round 9:
+Before personalized one-step SGD:
+Mean test accuracy: 0.8098747236551216
+Mean test AUC: 0.8313028739428604
+Mean MSE: 0.14027829385464793
+Mean demographic parity difference:  0.1295890253110591
+Mean equalized odds difference: 0.11798774486786029
+Mean consistency: 0.9841709653647751
+Mean generalized entropy error: 0.1129324848939699
+After personalized one-step SGD:
+Mean test accuracy: 0.7902726602800295
+Mean test AUC: 0.829871521392714
+Mean MSE: 0.14053930608829657
+Mean demographic parity difference:  0.08110770592915537
+Mean equalized odds difference: 0.07377820872918776
+Mean consistency: 0.9853205600589536
+Mean generalized entropy error: 0.13059542825982856
+
+Round 10:
+Before personalized one-step SGD:
+Mean test accuracy: 0.7808400884303611
+Mean test AUC: 0.8301383162222566
+Mean MSE: 0.1409360567665851
+Mean demographic parity difference:  0.0607363616760471
+Mean equalized odds difference: 0.06352537295284892
+Mean consistency: 0.9854679439941048
+Mean generalized entropy error: 0.13915398926691788
+After personalized one-step SGD:
+Mean test accuracy: 0.797641857037583
+Mean test AUC: 0.8299484108712541
+Mean MSE: 0.14050567335148584
+Mean demographic parity difference:  0.10366246014371863
+Mean equalized odds difference: 0.10361303391330164
+Mean consistency: 0.9861164333087694
+Mean generalized entropy error: 0.12402067069982586
