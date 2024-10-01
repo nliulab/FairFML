@@ -1,0 +1,1613 @@
+==================================================
+Algorithm: PerAvg
+Local batch size: 64
+Local site steps: [10, 10, 10, 10, 10]
+Local site same steps: 10
+Local learning rate: 0.2
+Local learning rate decay: False
+Total number of clients: 5
+Clients join in each round: 1.0
+Clients randomly join: False
+Client drop rate: 0.0
+Client select regarding time: False
+Running times: 1
+Dataset: adult
+Number of classes: 2
+Backbone: lr
+Using device: cpu
+Using DP: False
+Auto break: False
+Global rounds: 10
+DLG attack: False
+Total number of new clients: 0
+Fine tuning epoches on new clients: 0
+Use fairness penalty: True
+Fairness loss function: group loss
+Fairness loss lambda: 1.0
+Fairness L2 gamma: 0.012844444444444434
+==================================================
+
+============= Running time: 0th =============
+Creating server and clients ...
+
+Join ratio / total clients: 1.0 / 5
+Finished creating server and clients.
+Intermediate coefficient for client 0 after round 0:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1494, -0.0215, -0.0873, -0.1210, -0.1671, -0.0815,  0.0159, -0.0246,
+          0.2297,  0.0998, -0.4995,  0.3260, -0.0745,  0.1274, -0.1938,  0.0140,
+          0.8279,  0.0065, -0.8197, -0.1305, -0.1121, -0.0095, -0.2451,  0.0220,
+         -0.2507, -0.0514, -0.4060,  0.0208, -0.1214, -0.0872, -0.0334]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5404])
+Intermediate coefficient for client 1 after round 0:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-1.9480e-01, -3.2892e-02, -4.3314e-02, -9.5932e-02, -1.3667e-01,
+         -9.8305e-02, -6.7882e-02,  1.7656e-04,  2.8453e-01,  1.2675e-01,
+         -4.6565e-01,  2.7820e-01, -4.6073e-02,  2.0229e-01, -2.8242e-01,
+         -2.2016e-03,  8.8965e-01, -2.4547e-02, -7.2533e-01, -1.3446e-01,
+         -1.1474e-01, -2.7911e-04, -2.5730e-01,  9.2831e-03, -2.7311e-01,
+         -1.1377e-01, -4.8815e-01,  1.0108e-01, -1.5689e-01, -6.6434e-02,
+         -1.8613e-02]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5858])
+Intermediate coefficient for client 2 after round 0:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1971, -0.0416, -0.0605, -0.0958, -0.1691, -0.0969, -0.0533, -0.0684,
+          0.3223,  0.1331, -0.5037,  0.3652, -0.0282,  0.2234, -0.2092,  0.0059,
+          0.9109, -0.0516, -0.7401, -0.1108, -0.0812, -0.0166, -0.2690, -0.0521,
+         -0.1868, -0.1622, -0.4315,  0.1081, -0.1505, -0.0727, -0.0106]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5968])
+Intermediate coefficient for client 3 after round 0:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2238, -0.0688, -0.0540, -0.0989, -0.1431, -0.1215, -0.0712,  0.0012,
+          0.3889,  0.1677, -0.4932,  0.2760, -0.0259,  0.2229, -0.2161,  0.0080,
+          0.9272, -0.0539, -0.7550, -0.1358, -0.0892, -0.0242, -0.2939, -0.0486,
+         -0.2138, -0.0977, -0.4259,  0.1587, -0.1759, -0.1303, -0.0029]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6270])
+Intermediate coefficient for client 4 after round 0:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1851, -0.0791, -0.0636, -0.0901, -0.1376, -0.1036, -0.0171, -0.0644,
+          0.3838,  0.1202, -0.5002,  0.3264, -0.0146,  0.1983, -0.2677,  0.0047,
+          0.8942, -0.0448, -0.7904, -0.1187, -0.0844, -0.0546, -0.2367, -0.0302,
+         -0.2668, -0.1530, -0.3431,  0.1382, -0.2155, -0.1176, -0.0080]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6474])
+
+------------Round number: 1-------------
+
+before SGD
+Client 0 test accuracy: 0.7879234167893961
+Client 0 MSE: 0.1342358249486945
+Client 0 AUROC: 0.8431877236848557
+Client 0 AUPRC: 0.5820911558112134
+Client 0 DPD: 0.05115864527629234
+Client 0 EOD: 0.041666666666666685
+Client 0 consistency: 0.972901325478645
+Client 0 generalized entropy error: 0.13279035163286076
+Client 1 test accuracy: 0.762278978388998
+Client 1 MSE: 0.15191520011703555
+Client 1 AUROC: 0.8059300480950823
+Client 1 AUPRC: 0.5626443184060987
+Client 1 DPD: 0.08671557078603556
+Client 1 EOD: 0.13516819571865446
+Client 1 consistency: 0.9795677799607073
+Client 1 generalized entropy error: 0.15334080141893644
+Client 2 test accuracy: 0.7921886514369934
+Client 2 MSE: 0.13759623279920977
+Client 2 AUROC: 0.8349975734045135
+Client 2 AUPRC: 0.575032391285222
+Client 2 DPD: 0.07099785525083102
+Client 2 EOD: 0.09732072498029944
+Client 2 consistency: 0.982903463522476
+Client 2 generalized entropy error: 0.12991604938271617
+Client 3 test accuracy: 0.7965801886792453
+Client 3 MSE: 0.13557206985229525
+Client 3 AUROC: 0.839587865603094
+Client 3 AUPRC: 0.5814091013528006
+Client 3 DPD: 0.04868501064153238
+Client 3 EOD: 0.02797685406381059
+Client 3 consistency: 0.9872641509433963
+Client 3 generalized entropy error: 0.12647471737766142
+Client 4 test accuracy: 0.771007371007371
+Client 4 MSE: 0.14746581338870363
+Client 4 AUROC: 0.8214632221350867
+Client 4 AUPRC: 0.603120709154022
+Client 4 DPD: 0.06424742677706796
+Client 4 EOD: 0.03696745306755114
+Client 4 consistency: 0.98997542997543
+Client 4 generalized entropy error: 0.14725381478052676
+Mean test accuracy: 0.7820191599115697
+Mean test AUC: 0.8285440880708157
+Mean MSE: 0.14186249778678525
+Mean demographic parity difference: 0.06376868862454482
+Mean equalized odds difference: 0.0619947863214757
+Mean consistency: 0.9846131171702285
+Mean generalized entropy error: 0.1380581130974829
+Averaged Train Loss: 0.4829
+Averaged Test Accuracy: 0.7820
+Averaged Test AUROC: 0.8285
+Averaged Test AUPRC: 0.5839
+Std Test Accuracy: 0.0131
+Std Test AUROC: 0.0137
+Std Test AUPRC: 0.0131
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13440522283136616
+Client 0 AUROC: 0.842697455508163
+Client 0 AUPRC: 0.5818049564582544
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9802650957290132
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7573673870333988
+Client 1 MSE: 0.1531607141634607
+Client 1 AUROC: 0.8049832548535745
+Client 1 AUPRC: 0.5577000818005988
+Client 1 DPD: 0.08407403441136574
+Client 1 EOD: 0.13904179408766565
+Client 1 consistency: 0.9819253438113948
+Client 1 generalized entropy error: 0.1575460374500427
+Client 2 test accuracy: 0.7921886514369934
+Client 2 MSE: 0.13752814574713434
+Client 2 AUROC: 0.833981436544528
+Client 2 AUPRC: 0.572528276729115
+Client 2 DPD: 0.07099785525083102
+Client 2 EOD: 0.09732072498029944
+Client 2 consistency: 0.9843773028739867
+Client 2 generalized entropy error: 0.12991604938271617
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.1353799926873302
+Client 3 AUROC: 0.8399562952739635
+Client 3 AUPRC: 0.5789846798180506
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9889150943396227
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.801965601965602
+Client 4 MSE: 0.1472878041995598
+Client 4 AUROC: 0.8221330759486035
+Client 4 AUPRC: 0.6017181233463006
+Client 4 DPD: 0.12852292900366707
+Client 4 EOD: 0.07292433968220563
+Client 4 consistency: 0.9912530712530713
+Client 4 generalized entropy error: 0.11926419771206888
+Mean test accuracy: 0.7902726602800295
+Mean test AUC: 0.8284427445043414
+Mean MSE: 0.14195130379418985
+Mean demographic parity difference: 0.08113898231334973
+Mean equalized odds difference: 0.07502437651169785
+Mean consistency: 0.9867943994104642
+Mean generalized entropy error: 0.130606908915993
+Averaged Train Loss: 0.4802
+Averaged Test Accuracy: 0.7903
+Std Test Accuracy: 0.0156
+Intermediate coefficient for client 0 after round 1:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1943, -0.0679, -0.0419, -0.1031, -0.1863, -0.1208,  0.0153, -0.0641,
+          0.2616,  0.1253, -0.5228,  0.3869, -0.0236,  0.2048, -0.1291,  0.0091,
+          0.8760, -0.0065, -0.8249, -0.1340, -0.1262, -0.0657, -0.2136, -0.0313,
+         -0.2690, -0.0775, -0.3947,  0.1001, -0.1931, -0.0928, -0.0114]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6338])
+Intermediate coefficient for client 1 after round 1:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2216, -0.0665, -0.0253, -0.0894, -0.1555, -0.1283, -0.0560,  0.0118,
+          0.3170,  0.1449, -0.4312,  0.3210, -0.0182,  0.2423, -0.2665, -0.0027,
+          0.8799, -0.0461, -0.7194, -0.1173, -0.1414, -0.0580, -0.2889, -0.0245,
+         -0.2006, -0.1250, -0.4784,  0.1205, -0.1732, -0.0538, -0.0067]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6220])
+Intermediate coefficient for client 2 after round 1:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2172, -0.0677, -0.0552, -0.0924, -0.1636, -0.1094, -0.0538, -0.0466,
+          0.3485,  0.1594, -0.4935,  0.3426, -0.0192,  0.2484, -0.2319,  0.0160,
+          0.9308, -0.0573, -0.7675, -0.1042, -0.0931, -0.0232, -0.2513, -0.0649,
+         -0.2602, -0.1640, -0.4467,  0.1003, -0.1224, -0.0812, -0.0054]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6574])
+Intermediate coefficient for client 3 after round 1:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2288, -0.0771, -0.0530, -0.0878, -0.1462, -0.1318, -0.0650, -0.0201,
+          0.3718,  0.1776, -0.5391,  0.2731, -0.0150,  0.2461, -0.2286,  0.0086,
+          0.8785, -0.0426, -0.7344, -0.1427, -0.1010, -0.0348, -0.3094, -0.0439,
+         -0.2584, -0.1058, -0.4461,  0.1465, -0.1895, -0.1349,  0.0014]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.7054])
+Intermediate coefficient for client 4 after round 1:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1834, -0.0927, -0.0604, -0.0849, -0.1505, -0.1185, -0.0340, -0.0497,
+          0.3713,  0.1296, -0.5115,  0.3627, -0.0095,  0.2169, -0.2305,  0.0019,
+          0.9009, -0.0385, -0.7504, -0.1264, -0.0750, -0.0252, -0.2620, -0.0406,
+         -0.2475, -0.1241, -0.3815,  0.1473, -0.1966, -0.1011, -0.0090]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6255])
+
+------------Round number: 2-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13399770963614308
+Client 0 AUROC: 0.8436902485659656
+Client 0 AUPRC: 0.5836181771979482
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9808541973490427
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15194579583024875
+Client 1 AUROC: 0.8059401203636088
+Client 1 AUPRC: 0.5631873272727588
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9821218074656188
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13740626481982954
+Client 2 AUROC: 0.8356618539189518
+Client 2 AUPRC: 0.5754876579714637
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9808400884303611
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.1351249075408304
+Client 3 AUROC: 0.8401921682378535
+Client 3 AUPRC: 0.5824965767878587
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9862028301886793
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.1476366625039244
+Client 4 AUROC: 0.821341316281595
+Client 4 AUPRC: 0.6045742639745174
+Client 4 DPD: 0.061280067726622874
+Client 4 EOD: 0.03586370030816924
+Client 4 consistency: 0.9905651105651105
+Client 4 generalized entropy error: 0.1481426197556581
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8288432355252626
+Mean MSE: 0.14174473363940718
+Mean demographic parity difference: 0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9852910832719235
+Mean generalized entropy error: 0.13925833096775317
+Averaged Train Loss: 0.4786
+Averaged Test Accuracy: 0.7807
+Averaged Test AUROC: 0.8288
+Averaged Test AUPRC: 0.5849
+Std Test Accuracy: 0.0141
+Std Test AUROC: 0.0140
+Std Test AUPRC: 0.0135
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.780559646539028
+Client 0 MSE: 0.13486033699178415
+Client 0 AUROC: 0.8440334362896503
+Client 0 AUPRC: 0.5833395776212125
+Client 0 DPD: 0.03391760744701921
+Client 0 EOD: 0.053030303030303025
+Client 0 consistency: 0.9814432989690721
+Client 0 generalized entropy error: 0.13936386503147447
+Client 1 test accuracy: 0.7544204322200393
+Client 1 MSE: 0.15360056945906836
+Client 1 AUROC: 0.8031954271900889
+Client 1 AUPRC: 0.5554392004693869
+Client 1 DPD: 0.07976368958377954
+Client 1 EOD: 0.1252803261977574
+Client 1 consistency: 0.9842829076620825
+Client 1 generalized entropy error: 0.16009518143961926
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13722920267996586
+Client 2 AUROC: 0.8355071584566851
+Client 2 AUPRC: 0.5762085235390945
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9839351510685336
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13511173607606428
+Client 3 AUROC: 0.8403988007516745
+Client 3 AUPRC: 0.5799538680354388
+Client 3 DPD: 0.05049660484443093
+Client 3 EOD: 0.02797685406381059
+Client 3 consistency: 0.9856132075471699
+Client 3 generalized entropy error: 0.12693705912093042
+Client 4 test accuracy: 0.7950859950859951
+Client 4 MSE: 0.14720115384001484
+Client 4 AUROC: 0.8225628883392653
+Client 4 AUPRC: 0.606024876390899
+Client 4 DPD: 0.11511366237760184
+Client 4 EOD: 0.05844931001678586
+Client 4 consistency: 0.9881081081081081
+Client 4 generalized entropy error: 0.1250820733583054
+Mean test accuracy: 0.787030213706706
+Mean test AUC: 0.8288528675005378
+Mean MSE: 0.1419100116452324
+Mean demographic parity difference: 0.07648143960150414
+Mean equalized odds difference: 0.06735067591387107
+Mean consistency: 0.9854089904200444
+Mean generalized entropy error: 0.13331189309197253
+Averaged Train Loss: 0.4839
+Averaged Test Accuracy: 0.7870
+Std Test Accuracy: 0.0155
+Intermediate coefficient for client 0 after round 2:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1837, -0.0760, -0.0397, -0.0968, -0.1903, -0.1477,  0.0271, -0.0657,
+          0.2815,  0.1224, -0.5034,  0.3976, -0.0226,  0.2054, -0.1260,  0.0091,
+          0.8694, -0.0110, -0.8111, -0.1277, -0.1253, -0.0733, -0.1990, -0.0432,
+         -0.2560, -0.0778, -0.3684,  0.0841, -0.1898, -0.0774, -0.0092]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6153])
+Intermediate coefficient for client 1 after round 2:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2153, -0.0676, -0.0247, -0.0756, -0.1532, -0.1308, -0.0565, -0.0217,
+          0.2565,  0.1408, -0.4693,  0.3632, -0.0139,  0.2421, -0.2418, -0.0015,
+          0.8909, -0.0424, -0.7184, -0.1219, -0.1328, -0.0234, -0.2778, -0.0176,
+         -0.2779, -0.1158, -0.4954,  0.1085, -0.1737, -0.0696, -0.0040]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6537])
+Intermediate coefficient for client 2 after round 2:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2076, -0.0539, -0.0517, -0.0990, -0.1643, -0.1102, -0.0463, -0.0535,
+          0.2985,  0.1462, -0.4976,  0.3675, -0.0165,  0.2511, -0.2007,  0.0150,
+          0.8875, -0.0642, -0.7587, -0.0938, -0.0762, -0.0476, -0.2645, -0.0555,
+         -0.2179, -0.1611, -0.4719,  0.1238, -0.1559, -0.0735, -0.0055]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6517])
+Intermediate coefficient for client 3 after round 2:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2379, -0.0850, -0.0468, -0.0952, -0.1357, -0.1452, -0.0709,  0.0076,
+          0.3744,  0.1659, -0.5431,  0.2956, -0.0178,  0.2586, -0.1633,  0.0062,
+          0.9093, -0.0455, -0.7183, -0.1377, -0.1077, -0.0373, -0.3065, -0.0458,
+         -0.2043, -0.0947, -0.4339,  0.1746, -0.1775, -0.1429,  0.0025]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6387])
+Intermediate coefficient for client 4 after round 2:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1996, -0.0800, -0.0620, -0.0895, -0.1486, -0.1110, -0.0229, -0.0727,
+          0.3553,  0.1362, -0.4923,  0.3328, -0.0116,  0.2331, -0.2426,  0.0061,
+          0.8844, -0.0524, -0.7751, -0.1432, -0.0885, -0.0355, -0.2648, -0.0367,
+         -0.2689, -0.1490, -0.3265,  0.1064, -0.2076, -0.1327, -0.0053]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6694])
+
+------------Round number: 3-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13421736520515767
+Client 0 AUROC: 0.8438128156101388
+Client 0 AUPRC: 0.5839649468625001
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9782032400589101
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15181717379707577
+Client 1 AUROC: 0.8078639236522045
+Client 1 AUPRC: 0.5640819492339214
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9838899803536346
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13751240247259525
+Client 2 AUROC: 0.8356345547197283
+Client 2 AUPRC: 0.5750229715451459
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9865880619012528
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13520426310850428
+Client 3 AUROC: 0.8413617862406138
+Client 3 AUPRC: 0.5903005325086241
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9873820754716981
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.7705159705159705
+Client 4 MSE: 0.1476305050059914
+Client 4 AUROC: 0.8236631829241318
+Client 4 AUPRC: 0.610190545079362
+Client 4 DPD: 0.060538227964011586
+Client 4 EOD: 0.03475994754878734
+Client 4 consistency: 0.9901719901719902
+Client 4 generalized entropy error: 0.1477947286302688
+Mean test accuracy: 0.7808400884303611
+Mean test AUC: 0.8301274330945599
+Mean MSE: 0.1417866340418943
+Mean demographic parity difference: 0.0607363616760471
+Mean equalized odds difference: 0.06352537295284892
+Mean consistency: 0.986617538688283
+Mean generalized entropy error: 0.13915398926691788
+Averaged Train Loss: 0.4876
+Averaged Test Accuracy: 0.7808
+Averaged Test AUROC: 0.8301
+Averaged Test AUPRC: 0.5886
+Std Test Accuracy: 0.0140
+Std Test AUROC: 0.0133
+Std Test AUPRC: 0.0155
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.1344080549965173
+Client 0 AUROC: 0.8433102907290287
+Client 0 AUPRC: 0.5823442574130266
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9782032400589101
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.1516544428219835
+Client 1 AUROC: 0.8079545740689447
+Client 1 AUPRC: 0.5652311199252356
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9844793713163065
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7921886514369934
+Client 2 MSE: 0.13733602074784854
+Client 2 AUROC: 0.8341300655180782
+Client 2 AUPRC: 0.572727994299859
+Client 2 DPD: 0.07099785525083102
+Client 2 EOD: 0.09732072498029944
+Client 2 consistency: 0.9823139277818718
+Client 2 generalized entropy error: 0.12991604938271617
+Client 3 test accuracy: 0.7977594339622641
+Client 3 MSE: 0.1349998030646407
+Client 3 AUROC: 0.839971890180667
+Client 3 AUPRC: 0.5813652292342911
+Client 3 DPD: 0.0547405493057667
+Client 3 EOD: 0.03286085894781547
+Client 3 consistency: 0.9847877358490567
+Client 3 generalized entropy error: 0.12523871207336176
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.1472959085268249
+Client 4 AUROC: 0.8224422392471497
+Client 4 AUPRC: 0.6053323688789604
+Client 4 DPD: 0.05979638820140031
+Client 4 EOD: 0.03475994754878734
+Client 4 consistency: 0.9907616707616708
+Client 4 generalized entropy error: 0.14820675401434585
+Mean test accuracy: 0.7812822402358143
+Mean test AUC: 0.8290762307044346
+Mean MSE: 0.14159456332202863
+Mean demographic parity difference: 0.06267648163273712
+Mean equalized odds difference: 0.06609734559114433
+Mean consistency: 0.985379513633014
+Mean generalized entropy error: 0.13869988964525554
+Averaged Train Loss: 0.4793
+Averaged Test Accuracy: 0.7813
+Std Test Accuracy: 0.0146
+Intermediate coefficient for client 0 after round 3:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1773, -0.0723, -0.0475, -0.1016, -0.2032, -0.1252,  0.0071, -0.0890,
+          0.2476,  0.1317, -0.4595,  0.4026, -0.0214,  0.2375, -0.1481,  0.0124,
+          0.8852, -0.0207, -0.8072, -0.1375, -0.1290, -0.0663, -0.2157, -0.0444,
+         -0.2520, -0.0996, -0.3635,  0.0852, -0.1793, -0.0800, -0.0071]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6265])
+Intermediate coefficient for client 1 after round 3:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2167, -0.0685, -0.0216, -0.0881, -0.1583, -0.1285, -0.0507,  0.0020,
+          0.2777,  0.1481, -0.4746,  0.3392, -0.0137,  0.2583, -0.2031, -0.0023,
+          0.9287, -0.0421, -0.7329, -0.1176, -0.1243, -0.0213, -0.2510, -0.0219,
+         -0.2624, -0.1243, -0.4576,  0.1171, -0.1750, -0.0597, -0.0045]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5955])
+Intermediate coefficient for client 2 after round 3:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2042, -0.0587, -0.0550, -0.0994, -0.1694, -0.1192, -0.0447, -0.0620,
+          0.3434,  0.1541, -0.4852,  0.3859, -0.0115,  0.2470, -0.2245,  0.0191,
+          0.9298, -0.0656, -0.7378, -0.0888, -0.0946, -0.0292, -0.2475, -0.0598,
+         -0.2127, -0.1736, -0.3848,  0.1104, -0.1663, -0.0874, -0.0038]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6061])
+Intermediate coefficient for client 3 after round 3:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-2.2391e-01, -8.1888e-02, -4.1277e-02, -9.2828e-02, -1.5373e-01,
+         -1.2829e-01, -6.9638e-02, -3.0383e-02,  3.9757e-01,  1.6088e-01,
+         -5.1271e-01,  3.1807e-01, -1.2784e-02,  2.4822e-01, -2.1800e-01,
+          7.1492e-03,  8.6571e-01, -4.6535e-02, -7.2017e-01, -1.2229e-01,
+         -1.0327e-01, -3.1653e-02, -2.7222e-01, -4.9851e-02, -2.4249e-01,
+         -8.8765e-02, -4.1064e-01,  1.4779e-01, -1.8307e-01, -1.1968e-01,
+         -5.2871e-04]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6411])
+Intermediate coefficient for client 4 after round 3:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1938, -0.0853, -0.0533, -0.0890, -0.1602, -0.1080, -0.0180, -0.0693,
+          0.3567,  0.1415, -0.4874,  0.3583, -0.0103,  0.1919, -0.2175,  0.0096,
+          0.8709, -0.0438, -0.7931, -0.1277, -0.0779, -0.0522, -0.2518, -0.0348,
+         -0.2526, -0.1455, -0.3481,  0.1036, -0.2135, -0.0941, -0.0059]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6437])
+
+------------Round number: 4-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13421818452506176
+Client 0 AUROC: 0.8438495857233906
+Client 0 AUPRC: 0.5847547103641835
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9764359351988218
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15161428322694612
+Client 1 AUROC: 0.8059300480950823
+Client 1 AUPRC: 0.5607554936246314
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9840864440078585
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.1374982154994483
+Client 2 AUROC: 0.8352705653967484
+Client 2 AUPRC: 0.5750370905251797
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9840825350036846
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13530598263049118
+Client 3 AUROC: 0.8411005715533306
+Client 3 AUPRC: 0.5903664492228113
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9876179245283019
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.1472870648521531
+Client 4 AUROC: 0.8234036616999456
+Client 4 AUPRC: 0.6094140961730731
+Client 4 DPD: 0.061280067726622874
+Client 4 EOD: 0.03586370030816924
+Client 4 consistency: 0.9885012285012285
+Client 4 generalized entropy error: 0.1481426197556581
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8296250310721004
+Mean MSE: 0.14167585697358054
+Mean demographic parity difference: 0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9855268975681649
+Mean generalized entropy error: 0.13925833096775317
+Averaged Train Loss: 0.4836
+Averaged Test Accuracy: 0.7807
+Averaged Test AUROC: 0.8296
+Averaged Test AUPRC: 0.5880
+Std Test Accuracy: 0.0141
+Std Test AUROC: 0.0139
+Std Test AUPRC: 0.0162
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13447825996827387
+Client 0 AUROC: 0.8431999803892729
+Client 0 AUPRC: 0.5829134517070064
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9779086892488954
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15202188701354036
+Client 1 AUROC: 0.8066502152947398
+Client 1 AUPRC: 0.5602525480365093
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9842829076620825
+Client 1 generalized entropy error: 0.1567006786690546
+Client 2 test accuracy: 0.8135593220338984
+Client 2 MSE: 0.13728784064385896
+Client 2 AUROC: 0.8362594030575103
+Client 2 AUPRC: 0.5770381783846444
+Client 2 DPD: 0.12870872784512152
+Client 2 EOD: 0.12245862884160758
+Client 2 consistency: 0.9865880619012528
+Client 2 generalized entropy error: 0.11034370481562013
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13478634522531507
+Client 3 AUROC: 0.840116143067674
+Client 3 AUPRC: 0.5812389579587565
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9865566037735849
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.801965601965602
+Client 4 MSE: 0.14711055682441718
+Client 4 AUROC: 0.822487482656693
+Client 4 AUPRC: 0.6075184398869811
+Client 4 DPD: 0.12852292900366707
+Client 4 EOD: 0.07292433968220563
+Client 4 consistency: 0.991056511056511
+Client 4 generalized entropy error: 0.11926419771206888
+Mean test accuracy: 0.7946941783345616
+Mean test AUC: 0.8293449847682458
+Mean MSE: 0.14153813469296714
+Mean demographic parity difference: 0.09289672701321902
+Mean equalized odds difference: 0.08074019969672913
+Mean consistency: 0.9867059690493737
+Mean generalized entropy error: 0.12656560503734962
+Averaged Train Loss: 0.4784
+Averaged Test Accuracy: 0.7947
+Std Test Accuracy: 0.0187
+Intermediate coefficient for client 0 after round 4:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1792, -0.0739, -0.0400, -0.1036, -0.1910, -0.1345,  0.0094, -0.0701,
+          0.3031,  0.1311, -0.4762,  0.4113, -0.0132,  0.2223, -0.1740,  0.0086,
+          0.9043, -0.0178, -0.8436, -0.1195, -0.1304, -0.0698, -0.2053, -0.0507,
+         -0.1970, -0.0873, -0.3347,  0.0919, -0.1395, -0.1002, -0.0103]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5749])
+Intermediate coefficient for client 1 after round 4:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2294, -0.0653, -0.0226, -0.0919, -0.1525, -0.1300, -0.0490,  0.0249,
+          0.2813,  0.1333, -0.4626,  0.3392, -0.0123,  0.2368, -0.2557, -0.0021,
+          0.8789, -0.0502, -0.7219, -0.1198, -0.1338, -0.0143, -0.2657, -0.0204,
+         -0.2908, -0.1227, -0.4929,  0.1268, -0.1450, -0.0704, -0.0066]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6446])
+Intermediate coefficient for client 2 after round 4:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2000, -0.0595, -0.0568, -0.0883, -0.1599, -0.1118, -0.0315, -0.0504,
+          0.3107,  0.1226, -0.4839,  0.3857, -0.0127,  0.2212, -0.2227,  0.0133,
+          0.9326, -0.0592, -0.7535, -0.1043, -0.1023, -0.0446, -0.2417, -0.0678,
+         -0.2375, -0.1935, -0.4138,  0.1103, -0.1645, -0.0627, -0.0028]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6448])
+Intermediate coefficient for client 3 after round 4:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-2.3332e-01, -7.4445e-02, -5.2506e-02, -8.8946e-02, -1.4782e-01,
+         -1.2244e-01, -6.0949e-02, -2.4223e-03,  3.6434e-01,  1.6728e-01,
+         -5.2852e-01,  3.0363e-01, -1.3067e-02,  2.4544e-01, -2.1087e-01,
+          1.1765e-02,  8.8477e-01, -6.3624e-02, -7.2601e-01, -1.2346e-01,
+         -8.7071e-02, -3.3364e-02, -3.0485e-01, -5.5504e-02, -2.0795e-01,
+         -9.6883e-02, -4.1178e-01,  1.7458e-01, -2.0462e-01, -1.4373e-01,
+         -8.3505e-04]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6546])
+Intermediate coefficient for client 4 after round 4:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-2.0594e-01, -8.4101e-02, -5.8146e-02, -9.4067e-02, -1.4436e-01,
+         -1.1084e-01,  8.5861e-04, -6.1270e-02,  4.1853e-01,  1.4388e-01,
+         -5.1926e-01,  3.4275e-01, -8.3339e-03,  2.0208e-01, -2.7453e-01,
+          7.1118e-03,  8.6853e-01, -4.5660e-02, -7.5490e-01, -1.2216e-01,
+         -9.0819e-02, -4.3075e-02, -2.2634e-01, -3.3741e-02, -2.6952e-01,
+         -1.3130e-01, -3.6928e-01,  1.3132e-01, -2.1510e-01, -1.0624e-01,
+         -6.3157e-03]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6330])
+
+------------Round number: 5-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13398492547457877
+Client 0 AUROC: 0.8438863558366426
+Client 0 AUPRC: 0.5841488203147411
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9758468335787923
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15171624043211643
+Client 1 AUROC: 0.80680129932264
+Client 1 AUPRC: 0.5644773880291887
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9831041257367387
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13744998793198063
+Client 2 AUROC: 0.835243266197525
+Client 2 AUPRC: 0.575050459533321
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9831982313927782
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13517185408793256
+Client 3 AUROC: 0.8401590290611086
+Client 3 AUPRC: 0.582750813331887
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9883254716981132
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.14739690700480712
+Client 4 AUROC: 0.821993575435845
+Client 4 AUPRC: 0.6057348812440329
+Client 4 DPD: 0.061280067726622874
+Client 4 EOD: 0.03586370030816924
+Client 4 consistency: 0.991056511056511
+Client 4 generalized entropy error: 0.14814261975565812
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8290956978412902
+Mean MSE: 0.1416575830609797
+Mean demographic parity difference: 0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9860869565217392
+Mean generalized entropy error: 0.13925833096775317
+Averaged Train Loss: 0.4860
+Averaged Test Accuracy: 0.7807
+Averaged Test AUROC: 0.8291
+Averaged Test AUPRC: 0.5855
+Std Test Accuracy: 0.0141
+Std Test AUROC: 0.0136
+Std Test AUPRC: 0.0136
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.1341752354540443
+Client 0 AUROC: 0.8434818845908713
+Client 0 AUPRC: 0.5832950051664104
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9764359351988218
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7897838899803536
+Client 1 MSE: 0.1516620173324916
+Client 1 AUROC: 0.8076725505501977
+Client 1 AUPRC: 0.563894301905655
+Client 1 DPD: 0.14112586563860927
+Client 1 EOD: 0.20295616717635065
+Client 1 consistency: 0.9805500982318271
+Client 1 generalized entropy error: 0.1274196493791088
+Client 2 test accuracy: 0.7921886514369934
+Client 2 MSE: 0.13708728345508245
+Client 2 AUROC: 0.8341937636495995
+Client 2 AUPRC: 0.5733769042113551
+Client 2 DPD: 0.07099785525083102
+Client 2 EOD: 0.09732072498029944
+Client 2 consistency: 0.9842299189388357
+Client 2 generalized entropy error: 0.12991604938271617
+Client 3 test accuracy: 0.7954009433962265
+Client 3 MSE: 0.13499592996535942
+Client 3 AUROC: 0.8401687758777983
+Client 3 AUPRC: 0.5835557082515191
+Client 3 DPD: 0.04787422722205331
+Client 3 EOD: 0.026755852842809368
+Client 3 consistency: 0.9870283018867925
+Client 3 generalized entropy error: 0.1274738941238041
+Client 4 test accuracy: 0.800982800982801
+Client 4 MSE: 0.14689001388782474
+Client 4 AUROC: 0.8227111861816574
+Client 4 AUPRC: 0.6050005748920676
+Client 4 DPD: 0.13214790146813005
+Client 4 EOD: 0.09391771019677997
+Client 4 consistency: 0.9917444717444718
+Client 4 generalized entropy error: 0.12012007336333788
+Mean test accuracy: 0.7946941783345616
+Mean test AUC: 0.8291937068737256
+Mean MSE: 0.14139994659532681
+Mean demographic parity difference: 0.091004582996774
+Mean equalized odds difference: 0.09121555689080739
+Mean consistency: 0.9858511422254974
+Mean generalized entropy error: 0.12644143508601963
+Averaged Train Loss: 0.4843
+Averaged Test Accuracy: 0.7947
+Std Test Accuracy: 0.0050
+Intermediate coefficient for client 0 after round 5:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2005, -0.0663, -0.0484, -0.0992, -0.1927, -0.1293,  0.0321, -0.0564,
+          0.2592,  0.1247, -0.5318,  0.4351, -0.0192,  0.2091, -0.1432,  0.0045,
+          0.8980, -0.0153, -0.8250, -0.1265, -0.1362, -0.0591, -0.2114, -0.0370,
+         -0.2702, -0.0723, -0.3470,  0.0804, -0.1986, -0.0839, -0.0091]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6273])
+Intermediate coefficient for client 1 after round 5:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2089, -0.0667, -0.0224, -0.0874, -0.1631, -0.1358, -0.0715,  0.0140,
+          0.2868,  0.1474, -0.4500,  0.3246, -0.0170,  0.2594, -0.2249, -0.0021,
+          0.9199, -0.0519, -0.7050, -0.1260, -0.1371, -0.0300, -0.2840, -0.0179,
+         -0.2301, -0.1001, -0.4754,  0.1271, -0.1919, -0.0569, -0.0050]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6102])
+Intermediate coefficient for client 2 after round 5:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2214, -0.0648, -0.0494, -0.1005, -0.1642, -0.1171, -0.0305, -0.0540,
+          0.3413,  0.1524, -0.5044,  0.3665, -0.0134,  0.2550, -0.2249,  0.0162,
+          0.8965, -0.0575, -0.7731, -0.1049, -0.0836, -0.0444, -0.2556, -0.0581,
+         -0.2278, -0.1731, -0.4448,  0.1227, -0.1354, -0.0757, -0.0037]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6555])
+Intermediate coefficient for client 3 after round 5:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2233, -0.0851, -0.0430, -0.1025, -0.1369, -0.1289, -0.0669, -0.0078,
+          0.3875,  0.1781, -0.5471,  0.2611, -0.0147,  0.2507, -0.2059,  0.0113,
+          0.8884, -0.0446, -0.7479, -0.1273, -0.1052, -0.0374, -0.2927, -0.0545,
+         -0.2620, -0.1300, -0.4309,  0.1555, -0.2141, -0.1337,  0.0013]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6964])
+Intermediate coefficient for client 4 after round 5:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1979, -0.0754, -0.0587, -0.0882, -0.1501, -0.1010, -0.0227, -0.0640,
+          0.3783,  0.1248, -0.5296,  0.3549, -0.0091,  0.2124, -0.2498,  0.0057,
+          0.8877, -0.0462, -0.7857, -0.1221, -0.0882, -0.0434, -0.2469, -0.0338,
+         -0.2798, -0.1211, -0.3565,  0.1268, -0.2446, -0.0995, -0.0082]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6788])
+
+------------Round number: 6-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13386189051240227
+Client 0 AUROC: 0.8438250723145561
+Client 0 AUPRC: 0.583171808968518
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.979381443298969
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15172747630681244
+Client 1 AUROC: 0.8059804094377157
+Client 1 AUPRC: 0.5630822460817935
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9833005893909627
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7907148120854827
+Client 2 MSE: 0.13735419770505247
+Client 2 AUROC: 0.8348701771414706
+Client 2 AUPRC: 0.574723317943486
+Client 2 DPD: 0.0687199509228128
+Client 2 EOD: 0.08991331757289205
+Client 2 consistency: 0.98481945467944
+Client 2 generalized entropy error: 0.13108571763871887
+Client 3 test accuracy: 0.7954009433962265
+Client 3 MSE: 0.13494679094863077
+Client 3 AUROC: 0.840408547568364
+Client 3 AUPRC: 0.583350164571114
+Client 3 DPD: 0.04612597547380157
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9879716981132075
+Client 3 generalized entropy error: 0.12754559015259784
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.14767400797676156
+Client 4 AUROC: 0.8220111700951117
+Client 4 AUPRC: 0.6055988605559349
+Client 4 DPD: 0.05979638820140031
+Client 4 EOD: 0.03475994754878734
+Client 4 consistency: 0.9897788697788698
+Client 4 generalized entropy error: 0.14820675401434585
+Mean test accuracy: 0.7803979366249079
+Mean test AUC: 0.8289594309667871
+Mean MSE: 0.14165465062720706
+Mean demographic parity difference: 0.06006757472158994
+Mean equalized odds difference: 0.06278463221210819
+Mean consistency: 0.9863227708179808
+Mean generalized entropy error: 0.1395104578170728
+Averaged Train Loss: 0.4826
+Averaged Test Accuracy: 0.7804
+Averaged Test AUROC: 0.8290
+Averaged Test AUPRC: 0.5852
+Std Test Accuracy: 0.0139
+Std Test AUROC: 0.0139
+Std Test AUPRC: 0.0139
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.8217967599410898
+Client 0 MSE: 0.13432169797931598
+Client 0 AUROC: 0.8433838309555327
+Client 0 AUPRC: 0.5839179314720047
+Client 0 DPD: 0.13698752228163993
+Client 0 EOD: 0.08765524558447232
+Client 0 consistency: 0.9787923416789396
+Client 0 generalized entropy error: 0.10124376078147163
+Client 1 test accuracy: 0.7612966601178782
+Client 1 MSE: 0.1513966917074651
+Client 1 AUROC: 0.8076977312215143
+Client 1 AUPRC: 0.5632899100403175
+Client 1 DPD: 0.08527878917684016
+Client 1 EOD: 0.13058103975535168
+Client 1 consistency: 0.9799607072691552
+Client 1 generalized entropy error: 0.15417755351798215
+Client 2 test accuracy: 0.789240972733972
+Client 2 MSE: 0.1386391714943135
+Client 2 AUROC: 0.833596214511041
+Client 2 AUPRC: 0.5712133035140952
+Client 2 DPD: 0.06055706411896462
+Client 2 EOD: 0.06769109535066982
+Client 2 consistency: 0.9859985261606485
+Client 2 generalized entropy error: 0.1326179457186934
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13514240567969307
+Client 3 AUROC: 0.8411395588200893
+Client 3 AUPRC: 0.5835359332347314
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9889150943396227
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.7660933660933661
+Client 4 MSE: 0.14864209541983303
+Client 4 AUROC: 0.8194775391606844
+Client 4 AUPRC: 0.6022889451167168
+Client 4 DPD: 0.04864071631270005
+Client 4 EOD: 0.029241183751877852
+Client 4 consistency: 0.9911547911547911
+Client 4 generalized entropy error: 0.15182226260943477
+Mean test accuracy: 0.7830508474576271
+Mean test AUC: 0.8283409666388586
+Mean MSE: 0.14224728150568283
+Mean demographic parity difference: 0.06495214452514685
+Mean equalized odds difference: 0.057055142800194796
+Mean consistency: 0.9866470154753131
+Mean generalized entropy error: 0.13708911246379582
+Averaged Train Loss: 0.4816
+Averaged Test Accuracy: 0.7831
+Std Test Accuracy: 0.0219
+Intermediate coefficient for client 0 after round 6:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1861, -0.0674, -0.0457, -0.1083, -0.2054, -0.1330,  0.0260, -0.0775,
+          0.2625,  0.1392, -0.5118,  0.4307, -0.0168,  0.2055, -0.1375,  0.0104,
+          0.8883, -0.0223, -0.8079, -0.1317, -0.1366, -0.0823, -0.2064, -0.0348,
+         -0.2533, -0.0887, -0.3759,  0.0809, -0.1871, -0.0887, -0.0113]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6386])
+Intermediate coefficient for client 1 after round 6:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2239, -0.0693, -0.0204, -0.0917, -0.1498, -0.1356, -0.0440,  0.0108,
+          0.2674,  0.1294, -0.4692,  0.3382, -0.0147,  0.2574, -0.2378, -0.0030,
+          0.8842, -0.0538, -0.6978, -0.1311, -0.1304, -0.0457, -0.2501, -0.0135,
+         -0.2686, -0.1455, -0.4278,  0.1243, -0.1799, -0.0812, -0.0031]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6288])
+Intermediate coefficient for client 2 after round 6:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2161, -0.0586, -0.0521, -0.0903, -0.1621, -0.1189, -0.0619, -0.0669,
+          0.3529,  0.1396, -0.5216,  0.3670, -0.0121,  0.2578, -0.2152,  0.0121,
+          0.8965, -0.0637, -0.7521, -0.0755, -0.0835, -0.0263, -0.2749, -0.0646,
+         -0.2434, -0.1811, -0.4698,  0.1440, -0.1725, -0.0683, -0.0015]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6638])
+Intermediate coefficient for client 3 after round 6:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2281, -0.0784, -0.0482, -0.1192, -0.1459, -0.1356, -0.0826, -0.0101,
+          0.3833,  0.1815, -0.5447,  0.3024, -0.0116,  0.2598, -0.1675,  0.0105,
+          0.9191, -0.0446, -0.7514, -0.1354, -0.1005, -0.0361, -0.2860, -0.0513,
+         -0.2437, -0.0952, -0.4142,  0.1556, -0.2102, -0.1572, -0.0016]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6655])
+Intermediate coefficient for client 4 after round 6:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1990, -0.0898, -0.0558, -0.0903, -0.1553, -0.0950, -0.0247, -0.0692,
+          0.3746,  0.1368, -0.5077,  0.3533, -0.0100,  0.2049, -0.2253,  0.0102,
+          0.9046, -0.0459, -0.7994, -0.1377, -0.0949, -0.0328, -0.2643, -0.0409,
+         -0.2612, -0.1155, -0.3616,  0.1218, -0.2023, -0.1203, -0.0088]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6512])
+
+------------Round number: 7-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.1338956812800466
+Client 0 AUROC: 0.8429548463009265
+Client 0 AUPRC: 0.5819876778373402
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9749631811487481
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.1515387949644976
+Client 1 AUROC: 0.807914284994838
+Client 1 AUPRC: 0.564129988241669
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9831041257367387
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13723315335820138
+Client 2 AUROC: 0.8363291676777481
+Client 2 AUPRC: 0.5762950272281394
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9858511422254974
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.1348974172475553
+Client 3 AUROC: 0.8416756337380211
+Client 3 AUPRC: 0.590963146242638
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9883254716981132
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.14738857168948644
+Client 4 AUROC: 0.8236298787476624
+Client 4 AUPRC: 0.6094722910312613
+Client 4 DPD: 0.061280067726622874
+Client 4 EOD: 0.03586370030816924
+Client 4 consistency: 0.9908599508599508
+Client 4 generalized entropy error: 0.1481426197556581
+Mean test accuracy: 0.78069270449521
+Mean test AUC: 0.8302565130984458
+Mean MSE: 0.14150756271334536
+Mean demographic parity difference: 0.060958858937198754
+Mean equalized odds difference: 0.06385641744295094
+Mean consistency: 0.9864701547531319
+Mean generalized entropy error: 0.13925833096775317
+Averaged Train Loss: 0.4834
+Averaged Test Accuracy: 0.7807
+Averaged Test AUROC: 0.8303
+Averaged Test AUPRC: 0.5887
+Std Test Accuracy: 0.0141
+Std Test AUROC: 0.0132
+Std Test AUPRC: 0.0152
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13423944453246084
+Client 0 AUROC: 0.8442908270824141
+Client 0 AUPRC: 0.5832882958207998
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9805596465390279
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.1523606842679756
+Client 1 AUROC: 0.8053811094603782
+Client 1 AUPRC: 0.5613737949538332
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9819253438113948
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.8142962417096536
+Client 2 MSE: 0.13738753320355637
+Client 2 AUROC: 0.8359500121329775
+Client 2 AUPRC: 0.5769121458890655
+Client 2 DPD: 0.13478393197673588
+Client 2 EOD: 0.11970055161544524
+Client 2 consistency: 0.9861459100957995
+Client 2 generalized entropy error: 0.10899422513505735
+Client 3 test accuracy: 0.8172169811320755
+Client 3 MSE: 0.13464841001885816
+Client 3 AUROC: 0.84194074715198
+Client 3 AUPRC: 0.5834714894602607
+Client 3 DPD: 0.10486976791324618
+Client 3 EOD: 0.05802410150236238
+Client 3 consistency: 0.9844339622641509
+Client 3 generalized entropy error: 0.10782809982480697
+Client 4 test accuracy: 0.800982800982801
+Client 4 MSE: 0.1470424126809011
+Client 4 AUROC: 0.8235984597132573
+Client 4 AUPRC: 0.6102063497010739
+Client 4 DPD: 0.13214790146813005
+Client 4 EOD: 0.09391771019677997
+Client 4 consistency: 0.9903685503685503
+Client 4 generalized entropy error: 0.1201200733633379
+Mean test accuracy: 0.7998526160648489
+Mean test AUC: 0.8299911540413134
+Mean MSE: 0.14153008919339471
+Mean demographic parity difference: 0.1096642768240611
+Mean equalized odds difference: 0.0946061637348539
+Mean consistency: 0.9857921886514369
+Mean generalized entropy error: 0.12173957881217919
+Averaged Train Loss: 0.4818
+Averaged Test Accuracy: 0.7999
+Std Test Accuracy: 0.0215
+Intermediate coefficient for client 0 after round 7:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1974, -0.0668, -0.0450, -0.1094, -0.1865, -0.1255,  0.0089, -0.0673,
+          0.2326,  0.1423, -0.4625,  0.3980, -0.0171,  0.2194, -0.1204,  0.0075,
+          0.9127, -0.0132, -0.8290, -0.1214, -0.1363, -0.0752, -0.2036, -0.0309,
+         -0.2333, -0.0904, -0.3825,  0.0901, -0.1544, -0.0887, -0.0108]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6000])
+Intermediate coefficient for client 1 after round 7:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2168, -0.0698, -0.0238, -0.0819, -0.1603, -0.1294, -0.0469,  0.0101,
+          0.2868,  0.1296, -0.4990,  0.3414, -0.0115,  0.2623, -0.2401, -0.0024,
+          0.8845, -0.0535, -0.7259, -0.1283, -0.1335, -0.0063, -0.2762, -0.0216,
+         -0.2835, -0.1187, -0.4844,  0.1466, -0.1983, -0.0599, -0.0043]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6347])
+Intermediate coefficient for client 2 after round 7:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2104, -0.0583, -0.0575, -0.0955, -0.1609, -0.1076, -0.0277, -0.0318,
+          0.3357,  0.1322, -0.5267,  0.3804, -0.0128,  0.2481, -0.2401,  0.0162,
+          0.8908, -0.0615, -0.7407, -0.0906, -0.0702, -0.0337, -0.2363, -0.0681,
+         -0.2613, -0.1575, -0.4562,  0.1317, -0.1478, -0.0658, -0.0050]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6534])
+Intermediate coefficient for client 3 after round 7:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2269, -0.0815, -0.0464, -0.0943, -0.1446, -0.1318, -0.0753, -0.0058,
+          0.4013,  0.1843, -0.4965,  0.2699, -0.0135,  0.2582, -0.2246,  0.0106,
+          0.9154, -0.0518, -0.7314, -0.1229, -0.1091, -0.0323, -0.2736, -0.0507,
+         -0.2295, -0.1176, -0.4222,  0.1583, -0.1637, -0.1419, -0.0023]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6387])
+Intermediate coefficient for client 4 after round 7:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2037, -0.0785, -0.0572, -0.0846, -0.1511, -0.1115, -0.0338, -0.0694,
+          0.3527,  0.1383, -0.4709,  0.3371, -0.0123,  0.2048, -0.2454,  0.0077,
+          0.8418, -0.0493, -0.7620, -0.1185, -0.0777, -0.0544, -0.2515, -0.0403,
+         -0.2798, -0.1329, -0.3796,  0.1228, -0.2198, -0.0994, -0.0047]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6756])
+
+------------Round number: 8-------------
+
+before SGD
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.1342222579316429
+Client 0 AUROC: 0.8439108692454773
+Client 0 AUPRC: 0.5835118277328337
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9784977908689249
+Client 0 generalized entropy error: 0.13439732142857155
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15224984465360866
+Client 1 AUROC: 0.8046609422607206
+Client 1 AUPRC: 0.5599055916302305
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9836935166994106
+Client 1 generalized entropy error: 0.15670067866905454
+Client 2 test accuracy: 0.7907148120854827
+Client 2 MSE: 0.13759821570023495
+Client 2 AUROC: 0.8356345547197283
+Client 2 AUPRC: 0.5764010716242705
+Client 2 DPD: 0.0687199509228128
+Client 2 EOD: 0.08991331757289205
+Client 2 consistency: 0.9831982313927782
+Client 2 generalized entropy error: 0.1310857176387189
+Client 3 test accuracy: 0.7954009433962265
+Client 3 MSE: 0.13540453523543305
+Client 3 AUROC: 0.8392915623757281
+Client 3 AUPRC: 0.5820802253319255
+Client 3 DPD: 0.04612597547380157
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9873820754716981
+Client 3 generalized entropy error: 0.1275455901525978
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.14795557656052039
+Client 4 AUROC: 0.8198533108121695
+Client 4 AUPRC: 0.6027684385989196
+Client 4 DPD: 0.05979638820140031
+Client 4 EOD: 0.03475994754878734
+Client 4 consistency: 0.990958230958231
+Client 4 generalized entropy error: 0.14820675401434585
+Mean test accuracy: 0.7803979366249079
+Mean test AUC: 0.8279965198947331
+Mean MSE: 0.14201676105499356
+Mean demographic parity difference: 0.06006757472158994
+Mean equalized odds difference: 0.06278463221210819
+Mean consistency: 0.9861753868828299
+Mean generalized entropy error: 0.1395104578170728
+Averaged Train Loss: 0.4823
+Averaged Test Accuracy: 0.7804
+Averaged Test AUROC: 0.8280
+Averaged Test AUPRC: 0.5840
+Std Test Accuracy: 0.0139
+Std Test AUROC: 0.0145
+Std Test AUPRC: 0.0138
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.780559646539028
+Client 0 MSE: 0.13461642841049165
+Client 0 AUROC: 0.8432980340246117
+Client 0 AUPRC: 0.5821403884154839
+Client 0 DPD: 0.03391760744701921
+Client 0 EOD: 0.053030303030303025
+Client 0 consistency: 0.9835051546391752
+Client 0 generalized entropy error: 0.13936386503147447
+Client 1 test accuracy: 0.7612966601178782
+Client 1 MSE: 0.15415196576508283
+Client 1 AUROC: 0.8015737919572936
+Client 1 AUPRC: 0.5527802627816252
+Client 1 DPD: 0.05700721068037411
+Client 1 EOD: 0.09775739041794088
+Client 1 consistency: 0.9844793713163065
+Client 1 generalized entropy error: 0.15608220685441568
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13764176707604536
+Client 2 AUROC: 0.8342149963601067
+Client 2 AUPRC: 0.5739678432167412
+Client 2 DPD: 0.06985890308682191
+Client 2 EOD: 0.09361702127659575
+Client 2 consistency: 0.9831982313927782
+Client 2 generalized entropy error: 0.1305003419409584
+Client 3 test accuracy: 0.7906839622641509
+Client 3 MSE: 0.13580687344057665
+Client 3 AUROC: 0.8379913370293262
+Client 3 AUPRC: 0.5780904085736884
+Client 3 DPD: 0.04719012871186784
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9886792452830189
+Client 3 generalized entropy error: 0.13127701242744103
+Client 4 test accuracy: 0.802948402948403
+Client 4 MSE: 0.14699265196961886
+Client 4 AUROC: 0.8219420482194204
+Client 4 AUPRC: 0.6047802149691137
+Client 4 DPD: 0.1314902880541122
+Client 4 EOD: 0.07971166999894769
+Client 4 consistency: 0.9895823095823095
+Client 4 generalized entropy error: 0.11840974906818517
+Mean test accuracy: 0.789093588798821
+Mean test AUC: 0.8274895521155724
+Mean MSE: 0.14216206898675962
+Mean demographic parity difference: 0.07715241295555053
+Mean equalized odds difference: 0.068987951934241
+Mean consistency: 0.9867059690493737
+Mean generalized entropy error: 0.13179342186864315
+Averaged Train Loss: 0.4838
+Averaged Test Accuracy: 0.7891
+Std Test Accuracy: 0.0140
+Intermediate coefficient for client 0 after round 8:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1822, -0.0574, -0.0413, -0.0943, -0.1998, -0.1347,  0.0384, -0.0808,
+          0.2369,  0.1266, -0.4974,  0.4112, -0.0165,  0.2153, -0.0833,  0.0120,
+          0.9343, -0.0257, -0.8036, -0.1406, -0.1272, -0.0484, -0.2012, -0.0301,
+         -0.2531, -0.0708, -0.3756,  0.0854, -0.1758, -0.0665, -0.0055]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5855])
+Intermediate coefficient for client 1 after round 8:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2285, -0.0723, -0.0202, -0.0835, -0.1562, -0.1328, -0.0544,  0.0137,
+          0.3023,  0.1516, -0.4860,  0.3428, -0.0114,  0.2406, -0.2438, -0.0037,
+          0.8715, -0.0472, -0.6982, -0.1161, -0.1439, -0.0265, -0.2725, -0.0208,
+         -0.2757, -0.1426, -0.4464,  0.1015, -0.1852, -0.0515, -0.0060]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6414])
+Intermediate coefficient for client 2 after round 8:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2134, -0.0710, -0.0569, -0.0943, -0.1676, -0.1245, -0.0279, -0.0479,
+          0.3059,  0.1269, -0.4649,  0.3855, -0.0134,  0.2710, -0.2245,  0.0102,
+          0.9090, -0.0695, -0.7416, -0.0753, -0.0801, -0.0410, -0.2363, -0.0682,
+         -0.2032, -0.1688, -0.4384,  0.1221, -0.1429, -0.0673, -0.0039]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6237])
+Intermediate coefficient for client 3 after round 8:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-2.1903e-01, -8.4486e-02, -5.1960e-02, -8.7866e-02, -1.4183e-01,
+         -1.4392e-01, -5.9910e-02, -1.0871e-03,  3.7342e-01,  1.5681e-01,
+         -5.1379e-01,  2.6371e-01, -1.3911e-02,  2.5842e-01, -1.7978e-01,
+          1.0910e-02,  9.2621e-01, -5.9499e-02, -7.3803e-01, -1.3601e-01,
+         -8.3971e-02, -4.2664e-02, -2.8853e-01, -4.9136e-02, -2.1173e-01,
+         -1.0699e-01, -4.2439e-01,  1.7361e-01, -1.9101e-01, -1.4848e-01,
+         -1.1761e-04]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6403])
+Intermediate coefficient for client 4 after round 8:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1854, -0.0824, -0.0579, -0.0895, -0.1548, -0.1168, -0.0194, -0.0711,
+          0.3841,  0.1407, -0.5160,  0.3340, -0.0102,  0.2349, -0.2374,  0.0025,
+          0.9033, -0.0532, -0.7804, -0.1145, -0.0808, -0.0540, -0.2435, -0.0408,
+         -0.2336, -0.1444, -0.3646,  0.1294, -0.1880, -0.1004, -0.0059]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6360])
+
+------------Round number: 9-------------
+
+before SGD
+Client 0 test accuracy: 0.7879234167893961
+Client 0 MSE: 0.13403456895276689
+Client 0 AUROC: 0.8443766240133354
+Client 0 AUPRC: 0.5849143184290798
+Client 0 DPD: 0.05115864527629234
+Client 0 EOD: 0.041666666666666685
+Client 0 consistency: 0.9731958762886598
+Client 0 generalized entropy error: 0.13279035163286076
+Client 1 test accuracy: 0.762278978388998
+Client 1 MSE: 0.1514895240186924
+Client 1 AUROC: 0.8068566967995366
+Client 1 AUPRC: 0.5647430829719146
+Client 1 DPD: 0.08671557078603556
+Client 1 EOD: 0.13516819571865446
+Client 1 consistency: 0.9764243614931237
+Client 1 generalized entropy error: 0.15334080141893644
+Client 2 test accuracy: 0.7921886514369934
+Client 2 MSE: 0.1373220448094925
+Client 2 AUROC: 0.8354009949041494
+Client 2 AUPRC: 0.5766301182818788
+Client 2 DPD: 0.07099785525083102
+Client 2 EOD: 0.09732072498029944
+Client 2 consistency: 0.982756079587325
+Client 2 generalized entropy error: 0.12991604938271617
+Client 3 test accuracy: 0.7965801886792453
+Client 3 MSE: 0.13518238853695483
+Client 3 AUROC: 0.8408705466794546
+Client 3 AUPRC: 0.5846423253829833
+Client 3 DPD: 0.04868501064153238
+Client 3 EOD: 0.02797685406381059
+Client 3 consistency: 0.9851415094339623
+Client 3 generalized entropy error: 0.1264747173776614
+Client 4 test accuracy: 0.771007371007371
+Client 4 MSE: 0.14707835375241596
+Client 4 AUROC: 0.8229160382859786
+Client 4 AUPRC: 0.6074040999473996
+Client 4 DPD: 0.06424742677706796
+Client 4 EOD: 0.03696745306755114
+Client 4 consistency: 0.9898771498771499
+Client 4 generalized entropy error: 0.14725381478052676
+Mean test accuracy: 0.7820191599115697
+Mean test AUC: 0.8296391422567775
+Mean MSE: 0.1415100373502256
+Mean demographic parity difference: 0.06376868862454482
+Mean equalized odds difference: 0.0619947863214757
+Mean consistency: 0.983581429624171
+Mean generalized entropy error: 0.13805811309748287
+Averaged Train Loss: 0.4851
+Averaged Test Accuracy: 0.7820
+Averaged Test AUROC: 0.8296
+Averaged Test AUPRC: 0.5869
+Std Test Accuracy: 0.0131
+Std Test AUROC: 0.0137
+Std Test AUPRC: 0.0140
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7864506627393225
+Client 0 MSE: 0.13403230742574185
+Client 0 AUROC: 0.8443521106045008
+Client 0 AUPRC: 0.5849925301004331
+Client 0 DPD: 0.04026539908892851
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.9758468335787923
+Client 0 generalized entropy error: 0.13439732142857158
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15243985840420018
+Client 1 AUROC: 0.805703422053232
+Client 1 AUPRC: 0.5593481982217496
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.9823182711198428
+Client 1 generalized entropy error: 0.15670067866905457
+Client 2 test accuracy: 0.789240972733972
+Client 2 MSE: 0.1381484066112769
+Client 2 AUROC: 0.8356375879640864
+Client 2 AUPRC: 0.5729962437374913
+Client 2 DPD: 0.05960833361073991
+Client 2 EOD: 0.07139479905437353
+Client 2 consistency: 0.9854089904200443
+Client 2 generalized entropy error: 0.13253353174204172
+Client 3 test accuracy: 0.7959905660377359
+Client 3 MSE: 0.13510218968213822
+Client 3 AUROC: 0.8391629043954244
+Client 3 AUPRC: 0.5792091044206205
+Client 3 DPD: 0.04700010134792744
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9869103773584905
+Client 3 generalized entropy error: 0.12708225723140495
+Client 4 test accuracy: 0.7950859950859951
+Client 4 MSE: 0.14692356038923443
+Client 4 AUROC: 0.821094991051859
+Client 4 AUPRC: 0.6022129062701153
+Client 4 DPD: 0.11511366237760184
+Client 4 EOD: 0.05844931001678586
+Client 4 consistency: 0.9893857493857494
+Client 4 generalized entropy error: 0.1250820733583054
+Mean test accuracy: 0.7877671333824613
+Mean test AUC: 0.8285379463910221
+Mean MSE: 0.14175119520442975
+Mean demographic parity difference: 0.07505485633376455
+Mean equalized odds difference: 0.06618599153307317
+Mean consistency: 0.9855563743551953
+Mean generalized entropy error: 0.1327485043858014
+Averaged Train Loss: 0.4847
+Averaged Test Accuracy: 0.7878
+Std Test Accuracy: 0.0138
+Intermediate coefficient for client 0 after round 9:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1976, -0.0717, -0.0479, -0.1063, -0.1804, -0.1376,  0.0084, -0.0497,
+          0.2877,  0.1343, -0.5132,  0.4272, -0.0188,  0.2090, -0.1292,  0.0095,
+          0.9242, -0.0212, -0.7915, -0.1286, -0.1260, -0.0465, -0.2233, -0.0473,
+         -0.2182, -0.0784, -0.3895,  0.0817, -0.1544, -0.0840, -0.0103]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.5915])
+Intermediate coefficient for client 1 after round 9:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1951, -0.0661, -0.0240, -0.0907, -0.1637, -0.1349, -0.0583,  0.0153,
+          0.2818,  0.1344, -0.4751,  0.3467, -0.0156,  0.2517, -0.2560, -0.0030,
+          0.8642, -0.0493, -0.7277, -0.0999, -0.1249, -0.0230, -0.2874, -0.0210,
+         -0.2465, -0.1191, -0.4461,  0.1088, -0.1913, -0.0574, -0.0054]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6304])
+Intermediate coefficient for client 2 after round 9:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2115, -0.0529, -0.0563, -0.0974, -0.1581, -0.1085, -0.0813, -0.0581,
+          0.3228,  0.1602, -0.4604,  0.3737, -0.0127,  0.2293, -0.2474,  0.0139,
+          0.8416, -0.0608, -0.7257, -0.0998, -0.0717, -0.0555, -0.2387, -0.0661,
+         -0.2490, -0.1699, -0.4581,  0.1237, -0.1460, -0.0760, -0.0049]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6570])
+Intermediate coefficient for client 3 after round 9:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2351, -0.0779, -0.0530, -0.1022, -0.1386, -0.1481, -0.0850, -0.0183,
+          0.3505,  0.1748, -0.5093,  0.2863, -0.0135,  0.2626, -0.1446,  0.0055,
+          0.8814, -0.0375, -0.7214, -0.1416, -0.0869, -0.0488, -0.2900, -0.0568,
+         -0.2222, -0.0907, -0.4284,  0.1561, -0.1931, -0.1390, -0.0021]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6632])
+Intermediate coefficient for client 4 after round 9:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1940, -0.0817, -0.0561, -0.0844, -0.1521, -0.1096, -0.0534, -0.0589,
+          0.3758,  0.1411, -0.4835,  0.3393, -0.0102,  0.2085, -0.2733,  0.0090,
+          0.8649, -0.0549, -0.7974, -0.1171, -0.0839, -0.0513, -0.2467, -0.0344,
+         -0.2938, -0.1420, -0.3857,  0.1375, -0.2038, -0.1251, -0.0045]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6826])
+
+------------Round number: 10-------------
+
+before SGD
+Client 0 test accuracy: 0.7879234167893961
+Client 0 MSE: 0.13445104565997204
+Client 0 AUROC: 0.8430406432318479
+Client 0 AUPRC: 0.5824629827667285
+Client 0 DPD: 0.03808674985145574
+Client 0 EOD: 0.06439393939393939
+Client 0 consistency: 0.976141384388807
+Client 0 generalized entropy error: 0.13340971131044774
+Client 1 test accuracy: 0.7583497053045186
+Client 1 MSE: 0.15240942507637018
+Client 1 AUROC: 0.8060811321229823
+Client 1 AUPRC: 0.5622571494267655
+Client 1 DPD: 0.08551081602056114
+Client 1 EOD: 0.1436289500509684
+Client 1 consistency: 0.981532416502947
+Client 1 generalized entropy error: 0.15670067866905454
+Client 2 test accuracy: 0.7914517317612381
+Client 2 MSE: 0.13772713267111894
+Client 2 AUROC: 0.8360258432419316
+Client 2 AUPRC: 0.5762591119054246
+Client 2 DPD: 0.06758099875880369
+Client 2 EOD: 0.08991331757289205
+Client 2 consistency: 0.982903463522476
+Client 2 generalized entropy error: 0.13059424061311453
+Client 3 test accuracy: 0.7954009433962265
+Client 3 MSE: 0.13551933326228044
+Client 3 AUROC: 0.8403832058449712
+Client 3 AUPRC: 0.5889559490469268
+Client 3 DPD: 0.04612597547380157
+Client 3 EOD: 0.025534851621808144
+Client 3 consistency: 0.9879716981132075
+Client 3 generalized entropy error: 0.12754559015259778
+Client 4 test accuracy: 0.7705159705159705
+Client 4 MSE: 0.14815934797808264
+Client 4 AUROC: 0.8216316281594982
+Client 4 AUPRC: 0.6068946253677421
+Client 4 DPD: 0.05757086891356649
+Client 4 EOD: 0.03255244203002355
+Client 4 consistency: 0.9915479115479116
+Client 4 generalized entropy error: 0.14791786812764313
+Mean test accuracy: 0.7808400884303611
+Mean test AUC: 0.829007006477903
+Mean MSE: 0.14217919471095064
+Mean demographic parity difference: 0.05895426703263693
+Mean equalized odds difference: 0.06212254323190416
+Mean consistency: 0.9858806190125277
+Mean generalized entropy error: 0.1392266841437653
+Averaged Train Loss: 0.4824
+Averaged Test Accuracy: 0.7808
+Averaged Test AUROC: 0.8290
+Averaged Test AUPRC: 0.5871
+Std Test Accuracy: 0.0141
+Std Test AUROC: 0.0138
+Std Test AUPRC: 0.0147
+
+Evaluate global model with one step update
+Client 0 test accuracy: 0.7790868924889544
+Client 0 MSE: 0.13466267424796996
+Client 0 AUROC: 0.8438005589057214
+Client 0 AUPRC: 0.5814065422717417
+Client 0 DPD: 0.03609625668449198
+Client 0 EOD: 0.053030303030303025
+Client 0 consistency: 0.9846833578792342
+Client 0 generalized entropy error: 0.1403684765846927
+Client 1 test accuracy: 0.7603143418467584
+Client 1 MSE: 0.15236844982187173
+Client 1 AUROC: 0.8052703145065847
+Client 1 AUPRC: 0.5598855715650075
+Client 1 DPD: 0.08838437923895195
+Client 1 EOD: 0.1528032619775739
+Client 1 consistency: 0.9791748526522593
+Client 1 generalized entropy error: 0.15501644495775896
+Client 2 test accuracy: 0.7907148120854827
+Client 2 MSE: 0.13740356395656397
+Client 2 AUROC: 0.8344151904877457
+Client 2 AUPRC: 0.5735841961045923
+Client 2 DPD: 0.0687199509228128
+Client 2 EOD: 0.08991331757289205
+Client 2 consistency: 0.9861459100957995
+Client 2 generalized entropy error: 0.13108571763871887
+Client 3 test accuracy: 0.8142688679245284
+Client 3 MSE: 0.13510054784480283
+Client 3 AUROC: 0.8412253308069585
+Client 3 AUPRC: 0.583889134037885
+Client 3 DPD: 0.10062582345191041
+Client 3 EOD: 0.05436109783935872
+Client 3 consistency: 0.9865566037735849
+Client 3 generalized entropy error: 0.11036077945247004
+Client 4 test accuracy: 0.77002457002457
+Client 4 MSE: 0.14712236759737823
+Client 4 AUROC: 0.8220576702660314
+Client 4 AUPRC: 0.6061058087955815
+Client 4 DPD: 0.061280067726622874
+Client 4 EOD: 0.03586370030816924
+Client 4 consistency: 0.9902702702702703
+Client 4 generalized entropy error: 0.1481426197556581
+Mean test accuracy: 0.7846720707442889
+Mean test AUC: 0.828977552423955
+Mean MSE: 0.1417138130033227
+Mean demographic parity difference: 0.07414944202717726
+Mean equalized odds difference: 0.0705604599056503
+Mean consistency: 0.9862932940309507
+Mean generalized entropy error: 0.13554051120971258
+Averaged Train Loss: 0.4851
+Averaged Test Accuracy: 0.7847
+Std Test Accuracy: 0.0186
+Intermediate coefficient for client 0 after round 10:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-1.9079e-01, -5.9331e-02, -4.8528e-02, -1.0059e-01, -1.8287e-01,
+         -1.3553e-01,  7.0017e-04, -7.1174e-02,  2.7228e-01,  1.3370e-01,
+         -4.8064e-01,  4.1352e-01, -1.8316e-02,  2.0682e-01, -1.4189e-01,
+          8.9727e-03,  8.9933e-01, -1.2384e-02, -8.2203e-01, -1.2226e-01,
+         -1.3353e-01, -7.5113e-02, -2.1759e-01, -3.8787e-02, -2.2631e-01,
+         -6.1410e-02, -3.2080e-01,  7.1596e-02, -1.8944e-01, -1.0307e-01,
+         -1.0928e-02]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6075])
+Intermediate coefficient for client 1 after round 10:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2036, -0.0617, -0.0227, -0.0897, -0.1566, -0.1308, -0.0579,  0.0101,
+          0.2785,  0.1476, -0.4686,  0.3632, -0.0105,  0.2523, -0.2517, -0.0032,
+          0.9298, -0.0435, -0.7393, -0.1160, -0.1277, -0.0372, -0.2684, -0.0119,
+         -0.2421, -0.1103, -0.4575,  0.1107, -0.1815, -0.0740, -0.0054]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6057])
+Intermediate coefficient for client 2 after round 10:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2211, -0.0595, -0.0484, -0.0969, -0.1732, -0.1133, -0.0778, -0.0348,
+          0.3390,  0.1484, -0.4922,  0.3555, -0.0109,  0.2468, -0.2149,  0.0166,
+          0.9107, -0.0570, -0.7563, -0.1054, -0.0876, -0.0346, -0.2437, -0.0597,
+         -0.2605, -0.1923, -0.4301,  0.1184, -0.1565, -0.0691, -0.0034]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6634])
+Intermediate coefficient for client 3 after round 10:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.2232, -0.0947, -0.0493, -0.0880, -0.1390, -0.1332, -0.0732, -0.0204,
+          0.3773,  0.1665, -0.5143,  0.2447, -0.0161,  0.2672, -0.1832,  0.0101,
+          0.9055, -0.0531, -0.7482, -0.1355, -0.1177, -0.0328, -0.3097, -0.0537,
+         -0.2455, -0.1284, -0.4317,  0.1686, -0.1606, -0.1482, -0.0028]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6854])
+Intermediate coefficient for client 4 after round 10:
+fc.weight torch.Size([1, 31])
+fc.weight tensor([[-0.1938, -0.0966, -0.0536, -0.0916, -0.1543, -0.1063, -0.0201, -0.0582,
+          0.3606,  0.1264, -0.5012,  0.3475, -0.0097,  0.1979, -0.2346,  0.0068,
+          0.8797, -0.0447, -0.7879, -0.1168, -0.0580, -0.0449, -0.2572, -0.0301,
+         -0.2716, -0.1581, -0.3185,  0.1434, -0.2143, -0.1327, -0.0064]])
+fc.bias torch.Size([1])
+fc.bias tensor([-0.6625])
+
+-------------Aggregated_model results------------------
+
+Best accuracy:
+0.7998526160648489
+File path: ../data/adult/C5adult/results/adult_PerAvg_test_0.h5
+
+Average time cost: 655.36s.
+Length:  20
+std for best accuracy: 0.0
+mean for best accuracy: 0.7998526160648489
+all accuracy: [array([0.78201916, 0.79027266, 0.7806927 , 0.78703021, 0.78084009,
+       0.78128224, 0.7806927 , 0.79469418, 0.7806927 , 0.79469418,
+       0.78039794, 0.78305085, 0.7806927 , 0.79985262, 0.78039794,
+       0.78909359, 0.78201916, 0.78776713, 0.78084009, 0.78467207])]
+All done!
+
+Storage on cpu
+-------------------------------------------------------------------------------
+Total Tensors: 544 	Used Memory: 12.00K
+-------------------------------------------------------------------------------

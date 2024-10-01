@@ -19,11 +19,11 @@ class BinaryLogisticRegression(nn.Module):
         return y_pred
 
 def tune_FL_model_gamma_step1(lambda_value, strategy, total_clients=5, metric='accuracy'):
-    gamma_length_1 = 10
+    gamma_length_1 = 3
     if not os.path.exists(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}'):
         os.mkdir(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}')
     gamma_list_1 = np.linspace(1e-4, 0.1, gamma_length_1)
-    with Pool(10) as pool:
+    with Pool(3) as pool:
         args = [(lambda_value, gamma_value, total_clients) for gamma_value in gamma_list_1]
         if strategy == 'FedAvg':
             pool.starmap(run_FedAvg, args)
@@ -38,7 +38,7 @@ def tune_FL_model_gamma_step1(lambda_value, strategy, total_clients=5, metric='a
 
 def tune_FL_model_gamma_step2(lambda_value, strategy, best_idx, total_clients=5, metric='accuracy'):
     result_df = pd.read_csv(f'outputs/adult/FL/{strategy}/lambda_{lambda_value}/FL_lambda_gamma_{metric}_result.csv')
-    gamma_length_2 = 10
+    gamma_length_2 = 3
     if best_idx == 0:
         gamma_list_2 = np.linspace(0, result_df['gamma'][1], gamma_length_2)
     elif best_idx == result_df.shape[0] - 1:
@@ -46,7 +46,7 @@ def tune_FL_model_gamma_step2(lambda_value, strategy, best_idx, total_clients=5,
         gamma_list_2 = np.linspace(result_df['gamma'][-2], result_df['gamma'][-1] + diff, gamma_length_2)
     else:
         gamma_list_2 = np.linspace(result_df['gamma'][best_idx - 1], result_df['gamma'][best_idx + 1], gamma_length_2)
-    with Pool(10) as pool:
+    with Pool(3) as pool:
         args = [(lambda_value, gamma_value, total_clients) for gamma_value in gamma_list_2]
         if strategy == 'FedAvg':
             pool.starmap(run_FedAvg, args)
