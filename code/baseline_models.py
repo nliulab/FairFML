@@ -27,7 +27,7 @@ def prepare_data(train_data, test_data):
     if feature_diff:
         dummy_df = pd.DataFrame(data=np.zeros((train_data.shape[0], len(feature_diff))), columns=list(feature_diff),
                                 index=train_data.index)
-        train_data = train_data.join(dummy_df)
+        train_data = pd.concat([train_data, dummy_df], axis=1)
     train_data = train_data.sort_index(axis=1)
 
     test_label, test_sensitive_feature = test_data['income.new'], test_data['gender'].map({'Male': 1, 'Female': 0})
@@ -37,7 +37,7 @@ def prepare_data(train_data, test_data):
     if feature_diff:
         dummy_df = pd.DataFrame(data=np.zeros((test_data.shape[0], len(feature_diff))), columns=list(feature_diff),
                                 index=test_data.index)
-        test_data = test_data.join(dummy_df)
+        test_data = pd.concat([test_data, dummy_df], axis=1)
     test_data = test_data.sort_index(axis=1)
     return train_data, test_data, train_label, test_label, train_sensitive_feature, test_sensitive_feature
 
