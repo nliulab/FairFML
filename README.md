@@ -20,23 +20,23 @@ Install required Python packages by running
 pip install -r requirements.txt
 ```
 ## Example: Run FairFML on Adult dataset
-We partition the Adult dataset from the UCI repository into a total of five clients, and the sensitive attribute is gender.
+We partitioned the Adult dataset from the UCI repository into a total of five clients with gender being the sensitive attribute.
 
 The following commands are to be run in the `code` directory. 
 ```
-cd code/
+cd code
 ```
 ### Step 0: Train baseline models:
 ```
 python baseline_models.py
 ```
 The central model is trained using pooled training data and is evaluated using testing data at each client. Local models are trained and evaluated independently at each client.
-### Step 1: Train local models and determine lambda values for each client
+### Step 1: Train local models and determine the lambda value for each client
 ```
 python utils/tune_local_lambda_adult.py
 ```
 The raw outputs (.txt files) and the summary of results (.csv files) are saved in `code/outputs/adult/local`. 
-### Step 2: Train FL models using lambda values within the selected range
+### Step 2: Train FL models using the final lambda value and gamma values within the user-defined range
 ```
 python utils/tune_FL_gamma_adult.py [FL strategy]
 ```
