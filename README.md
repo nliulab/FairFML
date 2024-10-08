@@ -20,13 +20,13 @@ Install required Python packages by running
 pip install -r requirements.txt
 ```
 ## Example: Run FairFML on Adult dataset
-We partitioned the Adult dataset from the UCI repository into a total of five clients with gender being the sensitive attribute.
+We partitioned [Adult dataset](https://archive.ics.uci.edu/dataset/2/adult) from the UCI repository into a total of five clients with **gender** being the sensitive attribute.
 
-The following commands are to be run in the `code` directory. 
+The following commands in this example are to be run in the `code` directory. 
 ```
 cd code
 ```
-### Step 0: Train baseline models:
+### Step 0: Train baseline models
 ```
 python baseline_models.py
 ```
@@ -50,11 +50,11 @@ The raw outputs (.txt files) and the summary of results on validation set (.csv 
 ```
 python utils/evaluate_adult_test.py [FL strategy]
 ```
-To use PerAvg, run
+For example, to use PerAvg, run
 ```
 python utils/evaluate_adult_test.py PerAvg
 ```
-For PerAvg, both server-side and client-side models can be be evaluated. Results will be saved in `code/outputs/adult/FL/PerAvg` as `test_results_server_model.csv` and `test_results_client_model.csv`. Results for each lambda value will also be saved in each directory (e.g. `code/outputs/adult/FL/PerAvg/lambda_1/test_result_lambda1_server_model.csv`).
+For PerAvg, both server-side and client-side models can be evaluated. Results will be saved in `code/outputs/adult/FL/PerAvg` as `test_results_server_model.csv` and `test_results_client_model.csv`. Results for each lambda value will also be saved in each directory (e.g. `code/outputs/adult/FL/PerAvg/lambda_1/test_result_lambda1_server_model.csv`).
 
 ## Implementing Additional FL Algorithms
 Currently, FairFML is only implemented for FedAvg and PerAvg based on [PFLlib](https://github.com/TsingZ0/PFLlib). Other FL algorithms available in PFLlib can be adapted by incorporating fairness penalty in the loss function. Check out our code for details.
