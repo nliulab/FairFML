@@ -2,6 +2,8 @@
 
 ### Python implementation for preprint FairFML: A Framework-Agnostic Approach for Algorithmic Fair Federated Learning with Applications to Reducing Gender Disparities in Cardiac Arrest Outcomes
 
+Read the complete story in our latest [preprint](https://arxiv.org/abs/2410.17269).
+
 <p align="center">
   <img height="500" src="workflow.jpg">
 </p>
